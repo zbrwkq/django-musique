@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
-    'product.apps.ProductConfig'
+    'albums.apps.AlbumsConfig',
+    'artists.apps.ArtistsConfig',
+    'tracks.apps.TracksConfig',
 ]
 
 MIDDLEWARE = [
