@@ -39,7 +39,7 @@ const AuthProvider = ({ children }) => {
         body: JSON.stringify(data),
       });
       const res = await response.json();
-      if (res.code == 200) {
+      if (res.code === 200) {
         const { username, password } = data;
         this.loginAction({ username, password });
       } else {
