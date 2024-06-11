@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AuthProvider from "./hooks/AuthProvider";
 import Login from "./routes/auth/login";
 import Topbar from "./components/topbar";
+import Register from "./routes/auth/register";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);
 
