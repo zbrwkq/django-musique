@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'albums.apps.AlbumsConfig',
     'artists.apps.ArtistsConfig',
     'tracks.apps.TracksConfig',
+    'follow.apps.FollowsConfig',
+    'users.apps.UsersConfig',
+    'likes.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
