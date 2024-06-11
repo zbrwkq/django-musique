@@ -8,6 +8,9 @@ import AuthProvider from "./hooks/AuthProvider";
 import Login from "./routes/auth/login";
 import Topbar from "./components/topbar";
 import Register from "./routes/auth/register";
+import Albums from "./routes/pages/albums";
+import Artists from "./routes/pages/artists";
+import Tracks from "./routes/pages/tracks";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +24,18 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/albums",
+    element: <Albums />,
+  },
+  {
+    path: "/artists",
+    element: <Artists />,
+  },
+  {
+    path: "/tracks",
+    element: <Tracks />,
   },
 ]);
 
