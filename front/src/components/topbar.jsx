@@ -1,6 +1,7 @@
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { useAuth } from "../hooks/AuthProvider";
+import NavLink from "react-bootstrap/esm/NavLink";
 
 const Topbar = () => {
   const auth = useAuth();
@@ -25,7 +26,12 @@ const Topbar = () => {
 
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="me-auto">{authButtons}</Nav>
+        <Nav className="me-auto">
+          {authButtons}
+          <NavLink href="/albums">Albums</NavLink>
+          <NavLink href="/artists">Artistes</NavLink>
+          <NavLink href="/tracks">Musiques</NavLink>
+        </Nav>
       </Navbar.Collapse>
     </Navbar>
   );
