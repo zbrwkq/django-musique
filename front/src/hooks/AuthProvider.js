@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const loginAction = async (data) => {
     try {
-      const response = await fetch("your-api-endpoint/auth/login", {
+      const response = await fetch("http://127.0.0.1/users/login/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
   };
   const registerAction = async (data) => {
     try {
-      const response = await fetch("your-api-endpoint/auth/register", {
+      const response = await fetch("http://127.0.0.1/users/register/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
