@@ -74,7 +74,6 @@ def like_album(request, album_id):
     except Exception as e:
         return Response({'message': str(e)}, status=500)
 
-
 @api_view(['POST'])
 def like_artist(request, id_artist):
     try:
@@ -92,9 +91,35 @@ def like_artist(request, id_artist):
 
     except Exception as e:
         return Response({'message': str(e)}, status=500)
+        
+@api_view(['POST'])
+def like_track(request, track_id):
+    try:
+        user_id = 1
 
+        if not user_id:
+            return Response({'message': 'Le paramètre user_id est requis'}, status=400)
+
+        like_created = Likes.toggle_like_track(user_id=user_id, track_id=track_id)
+
+        if like_created:
+            return Response({'message': 'Like ajouté'})
+        else:
+            return Response({'message': 'Like supprimé'})
+
+    except Exception as e:
+        return Response({'message': str(e)}, status=500)
 
 @api_view(['GET'])
 def get_artists_likes_by_user(request, id_user):
     liked_artists = Likes.objects.filter(id_user=id_user).values_list('id_artist', flat=True).distinct()
     return Response({'liked_artists': liked_artists})
+
+@api_view(['GET'])
+def get_albums_likes_by_user(request, id_user):
+    liked_albums = Likes.objects.filter(id_user=id_user).values_list('id_album', flat=True).distinct()
+    return Response({'liked_albums': liked_albums})
+@api_view(['GET'])
+def get_tracks_likes_by_user(request, id_user):
+    liked_tracks = Likes.objects.filter(id_user=id_user).values_list('id_track', flat=True).distinct()
+    return Response({'liked_tracks': liked_tracks})

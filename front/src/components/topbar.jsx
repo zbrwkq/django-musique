@@ -6,11 +6,12 @@ import NavLink from "react-bootstrap/esm/NavLink";
 const Topbar = () => {
   const auth = useAuth();
   let authButtons;
-  if (auth.user) {
-    authButtons = 
-        <Nav.Link onClick={() => auth.logOut()} href="/login">
-          Se déconnecter
-        </Nav.Link>;
+  if (auth.token) {
+    authButtons = (
+      <Nav.Link onClick={() => auth.logOut()} href="/login">
+        Se déconnecter
+      </Nav.Link>
+    );
   } else {
     authButtons = (
       <>
@@ -19,7 +20,6 @@ const Topbar = () => {
       </>
     );
   }
-  console.log(authButtons);
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>

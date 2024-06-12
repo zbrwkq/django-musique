@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 const Tracks = () => {
     const [tracks, setTracks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [likes, setLikes] = useState({});
+    const [likedTracks, setLikedTracks] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const [tracksPerPage] = useState(50);
+    const [tracksPerPage] = useState(10);
 
     useEffect(() => {
         const fetchTracks = async () => {
@@ -24,14 +28,46 @@ const Tracks = () => {
         fetchTracks();
     }, []);
 
-    const handleSearch = (event) => {
-        setSearchTerm(event.target.value);
-        setCurrentPage(1); // Reset pagination when searching
+    useEffect(() => {
+        const fetchLikedTracks = async () => {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/likes/user/tracks/1/");
+                setLikedTracks(response.data.liked_tracks);
+            } catch (err) {
+                setError(err.message);
+            }
+        };
+
+        fetchLikedTracks();
+    }, []);
+
+    const handleLike = async (trackId) => {
+        try {
+            const response = await axios.post(`http://127.0.0.1:8000/likes/like_track/${trackId}/`, {});
+            if (response.data.message === 'Like ajouté') {
+                setLikes(prevLikes => ({
+                    ...prevLikes,
+                    [trackId]: true
+                }));
+            } else {
+                setLikes(prevLikes => {
+                    const newLikes = { ...prevLikes };
+                    delete newLikes[trackId];
+                    return newLikes;
+                });
+            }
+        } catch (err) {
+            console.error(err.message);
+        }
     };
 
-    const filteredTracks = tracks.filter(
-        (track) =>
-            track.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const handleSearch = (event) => {
+        setSearchTerm(event.target.value);
+        setCurrentPage(1); // Reset to first page when performing a new search
+    };
+
+    const filteredTracks = tracks.filter(track =>
+        track.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const indexOfLastTrack = currentPage * tracksPerPage;
@@ -48,7 +84,7 @@ const Tracks = () => {
     if (error) return <p>Erreur: {error}</p>;
 
     return (
-        <div className="container">
+        <div className="w-100 container">
             <input
                 type="text"
                 placeholder="Rechercher..."
@@ -59,12 +95,20 @@ const Tracks = () => {
                 <thead>
                     <tr>
                         <th scope="col">Nom de la piste</th>
+                        <th scope="col">Like</th>
                     </tr>
                 </thead>
                 <tbody>
                     {currentTracks.map((track) => (
                         <tr key={track.id}>
                             <td>{track.name}</td>
+                            <td>
+                                <FontAwesomeIcon
+                                    icon={faHeart}
+                                    onClick={() => handleLike(track.id)}
+                                    style={{ color: likedTracks.includes(track.id) ? "red" : "grey", cursor: "pointer" }}
+                                />
+                            </td>
                         </tr>
                     ))}
                 </tbody>

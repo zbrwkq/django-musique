@@ -10,4 +10,6 @@ pip install django-filter
 
 pip install django-cors-headers
 
+pip install djangorestframework-simplejwt
+
 python manage.py runserver
