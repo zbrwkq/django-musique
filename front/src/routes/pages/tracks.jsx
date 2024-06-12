@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../../hooks/AuthProvider";
+import { jwtDecode } from "jwt-decode";
 
 const Tracks = () => {
     const [tracks, setTracks] = useState([]);
@@ -12,6 +14,8 @@ const Tracks = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [tracksPerPage] = useState(10);
+
+    const auth = useAuth();
 
     useEffect(() => {
         const fetchTracks = async () => {
@@ -29,32 +33,32 @@ const Tracks = () => {
     }, []);
 
     useEffect(() => {
-        const fetchLikedTracks = async () => {
-            try {
-                const response = await axios.get("http://127.0.0.1:8000/likes/user/tracks/1/");
-                setLikedTracks(response.data.liked_tracks);
-            } catch (err) {
-                setError(err.message);
-            }
-        };
+        if (auth.token){
+            const decodedToken = jwtDecode(auth.token);
+            const userId = decodedToken.user_id;
 
-        fetchLikedTracks();
-    }, []);
+            const fetchLikedTracks = async () => {
+                try {
+                    const response = await axios.get(`http://127.0.0.1:8000/likes/user/tracks/${userId}`);
+                    setLikedTracks(response.data.liked_tracks);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+    
+            fetchLikedTracks();
+        }
+    }, [auth.token]);
 
     const handleLike = async (trackId) => {
         try {
-            const response = await axios.post(`http://127.0.0.1:8000/likes/like_track/${trackId}/`, {});
+            const response = await axios.post(`http://127.0.0.1:8000/likes/like_track/${trackId}/`, {}, {
+                headers: { Authorization: `Bearer ${auth.token}` }
+            });
             if (response.data.message === 'Like ajouté') {
-                setLikes(prevLikes => ({
-                    ...prevLikes,
-                    [trackId]: true
-                }));
+                setLikes([...likedTracks, trackId]);
             } else {
-                setLikes(prevLikes => {
-                    const newLikes = { ...prevLikes };
-                    delete newLikes[trackId];
-                    return newLikes;
-                });
+                setLikes(likedTracks.filter(id => id !== trackId));
             }
         } catch (err) {
             console.error(err.message);
@@ -63,7 +67,7 @@ const Tracks = () => {
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
-        setCurrentPage(1); // Reset to first page when performing a new search
+        setCurrentPage(1);
     };
 
     const filteredTracks = tracks.filter(track =>
@@ -99,15 +103,17 @@ const Tracks = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentTracks.map((track) => (
+                    {tracks.map((track) => (
                         <tr key={track.id}>
                             <td>{track.name}</td>
                             <td>
+                            {auth.token && (
                                 <FontAwesomeIcon
                                     icon={faHeart}
                                     onClick={() => handleLike(track.id)}
                                     style={{ color: likedTracks.includes(track.id) ? "red" : "grey", cursor: "pointer" }}
                                 />
+                            )}
                             </td>
                         </tr>
                     ))}

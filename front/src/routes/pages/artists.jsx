@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../../hooks/AuthProvider";
+import { jwtDecode } from "jwt-decode";
 
 const Artists = () => {
     const [artists, setArtists] = useState([]);
@@ -12,8 +14,9 @@ const Artists = () => {
     const [artistsPerPage] = useState(20);
     const [likes, setLikes] = useState([]);
 
+    const auth = useAuth();
     // FIXME: take real user id from local storage
-    const userId = 1
+    // const userId = 1
 
     useEffect(() => {
         const fetchArtists = async () => {
@@ -30,40 +33,37 @@ const Artists = () => {
     }, []);
 
     useEffect(() => {
-        const fetchArtistsLikes = async () => {
-            try {
-                // Get all artists likes by user id
-                const response = await axios.get("http://127.0.0.1:8000/likes/user/artists/" + userId)
-                console.log(response.data)
-                setLikes(response.data.liked_artists)
-                setLoading(false);
-            } catch (err) {
-                setError(err.message);
-                setLoading(false);
+        if (auth.token){
+            const decodedToken = jwtDecode(auth.token);
+            const userId = decodedToken.user_id;
+            
+            const fetchArtistsLikes = async () => {
+                try {
+                    // Get all artists likes by user id
+                    const response = await axios.get("http://127.0.0.1:8000/likes/user/artists/" + userId)
+                    console.log(response.data)
+                    setLikes(response.data.liked_artists)
+                    setLoading(false);
+                } catch (err) {
+                    setError(err.message);
+                    setLoading(false);
+                }
             }
-        }
 
-        fetchArtistsLikes();
-    }, [])
+            fetchArtistsLikes();
+        }
+    }, [auth.token])
 
     const handleLike = async (artistId) => {
         try {
-            const response = await axios.post(`http://127.0.0.1:8000/likes/like_artist/${artistId}/`, {
-                id_user: userId
+            const response = await axios.post(`http://127.0.0.1:8000/likes/like_artist/${artistId}/`, {}, {
+                headers: { Authorization: `Bearer ${auth.token}` }
             });
-            
-            // setLikes(prevLikes => ({
-            //     ...prevLikes,
-            //     [artistId]: !prevLikes[artistId]
-            // }));
-
             if (response.data.message === 'Like ajouté') {
                 setLikes([...likes, artistId]);
             } else {
                 setLikes(likes.filter(id => id !== artistId));
             }
-
-            console.log(response.data.message);
         } catch (err) {
             console.error(err.message);
         }
@@ -105,11 +105,13 @@ const Artists = () => {
                     <li key={artist.id} style={{ listStyle: "none" }}>
                         <img src={artist.photo_url} alt="" width={300} height={300} />
                         <p id="artist_name">{artist.name}</p>
-                        <FontAwesomeIcon
-                            icon={faHeart}
-                            onClick={() => handleLike(artist.id)}
-                            style={{ color: likes.includes(artist.id) ? "red" : "grey", cursor: "pointer" }}
-                        />
+                        {auth.token && (
+                            <FontAwesomeIcon
+                                icon={faHeart}
+                                onClick={() => handleLike(artist.id)}
+                                style={{ color: likes.includes(artist.id) ? "red" : "grey", cursor: "pointer" }}
+                            />
+                        )}
                     </li>
                 ))}
             </ul>
