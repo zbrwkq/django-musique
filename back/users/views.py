@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 
 from .serializers import UsersSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
 # Create your views here.
 
@@ -35,7 +36,12 @@ def register(request):
     if request.method == 'POST':
         serializer = UsersSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            user = serializer.save()
+            token = RefreshToken.for_user(user)
+            data = {
+                'refresh': str(token),
+                'access': str(token.access_token),
+            }
+            return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
