@@ -59,10 +59,7 @@ def get_like(request, id):
 @api_view(['POST'])
 def like_album(request, album_id):
     try:
-        user_id = 1
-
-        if not user_id:
-            return Response({'message': 'Le paramètre user_id est requis'}, status=400)
+        user_id = request.user.id
 
         like_created = Likes.toggle_like(user_id=user_id, album_id=album_id)
 
@@ -77,10 +74,7 @@ def like_album(request, album_id):
 @api_view(['POST'])
 def like_artist(request, id_artist):
     try:
-        id_user = request.data.get('id_user')
-
-        if not id_user:
-            return Response({'message': 'Le paramètre user_id est requis'}, status=400)
+        id_user = request.user.id
 
         like_created = Likes.toggle_like_artist(user_id=id_user, id_artist=id_artist)
 
@@ -95,10 +89,7 @@ def like_artist(request, id_artist):
 @api_view(['POST'])
 def like_track(request, track_id):
     try:
-        user_id = 1
-
-        if not user_id:
-            return Response({'message': 'Le paramètre user_id est requis'}, status=400)
+        user_id = request.user.id
 
         like_created = Likes.toggle_like_track(user_id=user_id, track_id=track_id)
 
@@ -119,6 +110,7 @@ def get_artists_likes_by_user(request, id_user):
 def get_albums_likes_by_user(request, id_user):
     liked_albums = Likes.objects.filter(id_user=id_user).values_list('id_album', flat=True).distinct()
     return Response({'liked_albums': liked_albums})
+    
 @api_view(['GET'])
 def get_tracks_likes_by_user(request, id_user):
     liked_tracks = Likes.objects.filter(id_user=id_user).values_list('id_track', flat=True).distinct()
