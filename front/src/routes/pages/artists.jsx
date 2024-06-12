@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 const Artists = () => {
     const [artists, setArtists] = useState([]);
@@ -8,13 +10,16 @@ const Artists = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [artistsPerPage] = useState(20);
+    const [likes, setLikes] = useState([]);
+
+    // FIXME: take real user id from local storage
+    const userId = 1
 
     useEffect(() => {
         const fetchArtists = async () => {
             try {
                 const response = await axios.get("http://127.0.0.1:8000/artists/");
                 setArtists(response.data.Artists);
-                setLoading(false);
             } catch (err) {
                 setError(err.message);
                 setLoading(false);
@@ -23,6 +28,46 @@ const Artists = () => {
 
         fetchArtists();
     }, []);
+
+    useEffect(() => {
+        const fetchArtistsLikes = async () => {
+            try {
+                // Get all artists likes by user id
+                const response = await axios.get("http://127.0.0.1:8000/likes/user/artists/" + userId)
+                console.log(response.data)
+                setLikes(response.data.liked_artists)
+                setLoading(false);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        }
+
+        fetchArtistsLikes();
+    }, [])
+
+    const handleLike = async (artistId) => {
+        try {
+            const response = await axios.post(`http://127.0.0.1:8000/likes/like_artist/${artistId}/`, {
+                id_user: userId
+            });
+            
+            // setLikes(prevLikes => ({
+            //     ...prevLikes,
+            //     [artistId]: !prevLikes[artistId]
+            // }));
+
+            if (response.data.message === 'Like ajouté') {
+                setLikes([...likes, artistId]);
+            } else {
+                setLikes(likes.filter(id => id !== artistId));
+            }
+
+            console.log(response.data.message);
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
@@ -60,6 +105,11 @@ const Artists = () => {
                     <li key={artist.id} style={{ listStyle: "none" }}>
                         <img src={artist.photo_url} alt="" width={300} height={300} />
                         <p id="artist_name">{artist.name}</p>
+                        <FontAwesomeIcon
+                            icon={faHeart}
+                            onClick={() => handleLike(artist.id)}
+                            style={{ color: likes.includes(artist.id) ? "red" : "grey", cursor: "pointer" }}
+                        />
                     </li>
                 ))}
             </ul>

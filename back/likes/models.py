@@ -19,6 +19,12 @@ class Likes(models.Model):
         else:
             cls.objects.create(id_user=user_id, id_album=album_id)
             return True
+
+    @classmethod
+    def toggle_like_artist(cls, user_id, id_artist):
+        existing_like = cls.objects.filter(id_user=user_id, id_artist=id_artist).first()
+        cls.objects.create(id_user=user_id, id_artist=id_artist)
+        return True
         
     @classmethod
     def toggle_like_track(cls, user_id, track_id):
@@ -30,6 +36,3 @@ class Likes(models.Model):
         else:
             cls.objects.create(id_user=user_id, id_track=track_id)
             return True
-        
-
-    
