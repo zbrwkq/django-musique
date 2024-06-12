@@ -1,9 +1,16 @@
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("site") || "");
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("access");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
   const loginAction = async (data) => {
     try {
       const response = await fetch("http://127.0.0.1:8000/users/token/", {
