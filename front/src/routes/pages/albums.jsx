@@ -24,9 +24,7 @@ const Albums = () => {
     const handleLike = async (albumId) => {
         try {
             const response = await axios.post(`http://127.0.0.1:8000/likes/like/${albumId}/`, {
-                user_id: 1
             });
-            
             setLikes(prevLikes => ({
                 ...prevLikes,
                 [albumId]: !prevLikes[albumId]
