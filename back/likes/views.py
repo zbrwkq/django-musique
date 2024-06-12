@@ -90,3 +90,14 @@ def like_track(request, track_id):
     except Exception as e:
         return Response({'message': str(e)}, status=500)
     
+
+@api_view(['GET'])
+def get_albums_likes_by_user(request, id_user):
+    liked_albums = Likes.objects.filter(id_user=id_user).values_list('id_album', flat=True).distinct()
+    return Response({'liked_albums': liked_albums})
+@api_view(['GET'])
+def get_tracks_likes_by_user(request, id_user):
+    liked_tracks = Likes.objects.filter(id_user=id_user).values_list('id_track', flat=True).distinct()
+    return Response({'liked_tracks': liked_tracks})
+
+

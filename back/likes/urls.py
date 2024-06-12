@@ -9,4 +9,6 @@ urlpatterns = [
     path('<str:id>/', views.get_like, name="get_like"),
     path('like/<int:album_id>/', views.like_album, name="like_album"),
     path('like_track/<int:track_id>/', views.like_track, name="like_track"),
+    path('user/albums/<int:id_user>/', views.get_albums_likes_by_user, name="get_albums_likes_by_user"),
+    path('user/tracks/<int:id_user>/', views.get_tracks_likes_by_user, name="get_tracks_likes_by_user"),
 ]
