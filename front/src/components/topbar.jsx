@@ -7,10 +7,11 @@ const Topbar = () => {
   const auth = useAuth();
   let authButtons;
   if (auth.user) {
-    authButtons = 
-        <Nav.Link onClick={() => auth.logOut()} href="/login">
-          Se déconnecter
-        </Nav.Link>;
+    authButtons = (
+      <Nav.Link onClick={() => auth.logOut()} href="/login">
+        Se déconnecter
+      </Nav.Link>
+    );
   } else {
     authButtons = (
       <>
@@ -19,7 +20,6 @@ const Topbar = () => {
       </>
     );
   }
-  console.log(authButtons);
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
