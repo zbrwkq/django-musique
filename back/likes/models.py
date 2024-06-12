@@ -19,3 +19,14 @@ class Likes(models.Model):
         else:
             cls.objects.create(id_user=user_id, id_album=album_id)
             return True
+
+    @classmethod
+    def toggle_like_artist(cls, user_id, id_artist):
+        existing_like = cls.objects.filter(id_user=user_id, id_artist=id_artist).first()
+
+        if existing_like:
+            existing_like.delete()
+            return False
+        else:
+            cls.objects.create(id_user=user_id, id_artist=id_artist)
+            return True

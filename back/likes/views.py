@@ -6,6 +6,7 @@ from django.shortcuts import render
 
 from .serializers import LikesSerializer
 from .models import Likes
+import logging
 
 # Create your views here.
 
@@ -72,3 +73,28 @@ def like_album(request, album_id):
 
     except Exception as e:
         return Response({'message': str(e)}, status=500)
+
+
+@api_view(['POST'])
+def like_artist(request, id_artist):
+    try:
+        id_user = request.data.get('id_user')
+
+        if not id_user:
+            return Response({'message': 'Le paramètre user_id est requis'}, status=400)
+
+        like_created = Likes.toggle_like_artist(user_id=id_user, id_artist=id_artist)
+
+        if like_created:
+            return Response({'message': 'Like ajouté'})
+        else:
+            return Response({'message': 'Like supprimé'})
+
+    except Exception as e:
+        return Response({'message': str(e)}, status=500)
+
+
+@api_view(['GET'])
+def get_artists_likes_by_user(request, id_user):
+    liked_artists = Likes.objects.filter(id_user=id_user).values_list('id_artist', flat=True).distinct()
+    return Response({'liked_artists': liked_artists})
