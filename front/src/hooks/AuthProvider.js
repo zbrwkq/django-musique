@@ -7,16 +7,19 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("site") || "");
   const loginAction = async (data) => {
     try {
-      const response = await fetch("http://127.0.0.1/users/login/", {
+      const response = await fetch("http://127.0.0.1:8000/users/login/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       const res = await response.json();
-      if (res.data) {
-        setUser(res.data.user);
+      if (res.user) {
+        setUser(res.user);
         setToken(res.token);
         localStorage.setItem("site", res.token);
         return;
@@ -28,16 +31,19 @@ const AuthProvider = ({ children }) => {
   };
   const registerAction = async (data) => {
     try {
-      const response = await fetch("http://127.0.0.1/users/register/", {
+      const response = await fetch("http://127.0.0.1:8000/users/register/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       const res = await response.json();
-      if (res.data) {
-        setUser(res.data.user);
+      if (res.user) {
+        setUser(res.user);
         setToken(res.token);
         localStorage.setItem("site", res.token);
         return;
@@ -47,6 +53,7 @@ const AuthProvider = ({ children }) => {
       console.error(err);
     }
   };
+  
   const logOut = () => {
     setUser(null);
     setToken("");
