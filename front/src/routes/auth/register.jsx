@@ -3,14 +3,14 @@ import { useAuth } from "../../hooks/AuthProvider";
 
 const Register = () => {
   const [input, setInput] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
   const auth = useAuth();
   const handleSubmitEvent = (e) => {
     e.preventDefault();
-    if (input.username !== "" && input.password !== "") {
+    if (input.email !== "" && input.password !== "") {
       auth.registerAction(input);
       return;
     }
@@ -38,7 +38,7 @@ const Register = () => {
           onChange={handleInput}
         />
         <div id="user-email" className="sr-only">
-          Please enter a valid username. It must contain at least 6 characters.
+          Please enter a valid email. It must contain at least 6 characters.
         </div>
       </div>
       <div className="form_control">
