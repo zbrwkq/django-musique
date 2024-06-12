@@ -7,7 +7,9 @@ const Topbar = () => {
   let authButton;
   if (auth.user) {
     authButton = (
-      <Nav.Link onClick={() => auth.logOut()}>Se déconnecter</Nav.Link>
+      <Nav.Link onClick={() => auth.logOut()} href="/login">
+        Se déconnecter
+      </Nav.Link>
     );
   } else {
     authButton = <Nav.Link href="/login">Se connecter</Nav.Link>;
