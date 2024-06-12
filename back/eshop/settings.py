@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'follows.apps.FollowsConfig',
     'users.apps.UsersConfig',
     'likes.apps.LikesConfig',
+    'comments.apps.CommentsConfig',
     'corsheaders',
 ]
 
