@@ -5,7 +5,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 const Albums = () => {
     const [albums, setAlbums] = useState([]);
-    const [likes, setLikes] = useState({});
+    const [likedAlbums, setLikedAlbums] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -21,15 +21,27 @@ const Albums = () => {
         fetchAlbums();
     }, []);
 
+    useEffect(() => {
+        const fetchLikedAlbums = async () => {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/likes/user/albums/1/");
+                setLikedAlbums(response.data.liked_albums);
+            } catch (err) {
+                setError(err.message);
+            }
+        };
+
+        fetchLikedAlbums();
+    }, []);
+
     const handleLike = async (albumId) => {
         try {
-            const response = await axios.post(`http://127.0.0.1:8000/likes/like/${albumId}/`, {
-            });
-            setLikes(prevLikes => ({
-                ...prevLikes,
-                [albumId]: !prevLikes[albumId]
-            }));
-            console.log(response.data.message);
+            const response = await axios.post(`http://127.0.0.1:8000/likes/like/${albumId}/`, {});
+            if (response.data.message === 'Like ajouté') {
+                setLikedAlbums([...likedAlbums, albumId]);
+            } else {
+                setLikedAlbums(likedAlbums.filter(id => id !== albumId));
+            }
         } catch (err) {
             console.error(err.message);
         }
@@ -46,7 +58,7 @@ const Albums = () => {
                         <FontAwesomeIcon
                             icon={faHeart}
                             onClick={() => handleLike(album.id)}
-                            style={{ color: likes[album.id] ? "red" : "grey", cursor: "pointer" }}
+                            style={{ color: likedAlbums.includes(album.id) ? "red" : "grey", cursor: "pointer" }}
                         />
                     </li>
                 ))}
