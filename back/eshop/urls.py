@@ -26,5 +26,6 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('tracks/', include('tracks.urls')),
     path('comments/', include('comments.urls')),
+    path('spotify/', include('spotify.urls')),
 ]
 
