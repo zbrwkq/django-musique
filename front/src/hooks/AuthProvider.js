@@ -15,10 +15,11 @@ const AuthProvider = ({ children }) => {
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const res = await response.json();
       if (res.user) {
+        console.log(res);
         setUser(res.user);
         setToken(res.token);
         localStorage.setItem("site", res.token);
@@ -39,7 +40,7 @@ const AuthProvider = ({ children }) => {
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const res = await response.json();
       if (res.user) {
@@ -53,7 +54,7 @@ const AuthProvider = ({ children }) => {
       console.error(err);
     }
   };
-  
+
   const logOut = () => {
     setUser(null);
     setToken("");

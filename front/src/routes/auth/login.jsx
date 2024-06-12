@@ -14,10 +14,10 @@ const Login = () => {
     e.preventDefault();
     if (input.email !== "" && input.password !== "") {
       auth.loginAction(input);
-      navigate("/");
+      // navigate("/");
       return;
     }
-    alert("pleae provide a valid input");
+    alert("please provide a valid input");
   };
 
   const handleInput = (e) => {
