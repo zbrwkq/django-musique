@@ -7,5 +7,15 @@ class Likes(models.Model):
     id_track = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return f"Like de l'utilisateur {self.id_user} sur l'album {self.id_album}"
 
+    @classmethod
+    def toggle_like(cls, user_id, album_id):
+        existing_like = cls.objects.filter(id_user=user_id, id_album=album_id).first()
+
+        if existing_like:
+            existing_like.delete()
+            return False
+        else:
+            cls.objects.create(id_user=user_id, id_album=album_id)
+            return True

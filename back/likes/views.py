@@ -53,3 +53,22 @@ def get_like(request, id):
     serializer = LikesSerializer(likes, many=False)
 
     return Response({"Like" : serializer.data})
+
+
+@api_view(['POST'])
+def like_album(request, album_id):
+    try:
+        user_id = 1
+
+        if not user_id:
+            return Response({'message': 'Le paramètre user_id est requis'}, status=400)
+
+        like_created = Likes.toggle_like(user_id=user_id, album_id=album_id)
+
+        if like_created:
+            return Response({'message': 'Like ajouté'})
+        else:
+            return Response({'message': 'Like supprimé'})
+
+    except Exception as e:
+        return Response({'message': str(e)}, status=500)
