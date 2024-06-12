@@ -1,20 +1,23 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const auth = useAuth();
   const handleSubmitEvent = (e) => {
     e.preventDefault();
     if (input.email !== "" && input.password !== "") {
       auth.registerAction(input);
+      navigate("/");
       return;
     }
-    alert("pleae provide a valid input");
+    alert("please provide a valid input");
   };
 
   const handleInput = (e) => {
