@@ -8,6 +8,7 @@ const Tracks = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [tracksPerPage] = useState(50);
+    const [likes, setLikes] = useState({});
 
     useEffect(() => {
         const fetchTracks = async () => {
@@ -26,7 +27,20 @@ const Tracks = () => {
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
-        setCurrentPage(1); // Reset pagination when searching
+        setCurrentPage(1); 
+    };
+
+    const handleLike = async (id) => {
+        try {
+            await axios.post(`http://127.0.0.1:8000/likes/like_track/${id}/`, {});
+
+            setLikes(prevLikes => ({
+                ...prevLikes,
+                [id]: true
+            }));
+        } catch (err) {
+            console.error(err.message);
+        }
     };
 
     const filteredTracks = tracks.filter(
@@ -59,12 +73,21 @@ const Tracks = () => {
                 <thead>
                     <tr>
                         <th scope="col">Nom de la piste</th>
+                        <th scope="col">Like</th>
                     </tr>
                 </thead>
                 <tbody>
                     {currentTracks.map((track) => (
                         <tr key={track.id}>
                             <td>{track.name}</td>
+                            <td>
+                                <button
+                                    onClick={() => handleLike(track.id)}
+                                    style={{ color: likes[track.id] ? "red" : "grey", cursor: "pointer" }}
+                                >
+                                    &#10084;&#xFE0E;
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

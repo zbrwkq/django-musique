@@ -72,3 +72,21 @@ def like_album(request, album_id):
 
     except Exception as e:
         return Response({'message': str(e)}, status=500)
+@api_view(['POST'])
+def like_track(request, track_id):
+    try:
+        user_id = 1
+
+        if not user_id:
+            return Response({'message': 'Le paramètre user_id est requis'}, status=400)
+
+        like_created = Likes.toggle_like_track(user_id=user_id, track_id=track_id)
+
+        if like_created:
+            return Response({'message': 'Like ajouté'})
+        else:
+            return Response({'message': 'Like supprimé'})
+
+    except Exception as e:
+        return Response({'message': str(e)}, status=500)
+    
