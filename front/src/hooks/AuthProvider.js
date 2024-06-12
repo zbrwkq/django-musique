@@ -7,7 +7,7 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("site") || "");
   const loginAction = async (data) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/users/login/", {
+      const response = await fetch("http://127.0.0.1:8000/users/token/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -19,7 +19,6 @@ const AuthProvider = ({ children }) => {
       }
       const res = await response.json();
       if (res.user) {
-        console.log(res);
         setUser(res.user);
         setToken(res.token);
         localStorage.setItem("site", res.token);

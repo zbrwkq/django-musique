@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [input, setInput] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const Register = () => {
   const auth = useAuth();
   const handleSubmitEvent = (e) => {
     e.preventDefault();
-    if (input.email !== "" && input.password !== "") {
+    if (input.username !== "" && input.password !== "") {
       auth.registerAction(input);
       navigate("/");
       return;
@@ -30,18 +30,18 @@ const Register = () => {
   return (
     <form onSubmit={handleSubmitEvent}>
       <div className="form_control">
-        <label htmlFor="user-email">Email:</label>
+        <label htmlFor="user-username">Username:</label>
         <input
-          type="email"
-          id="user-email"
-          name="email"
-          placeholder="example@yahoo.com"
-          aria-describedby="user-email"
+          type="username"
+          id="user-username"
+          name="username"
+          placeholder="Zbrwkq"
+          aria-describedby="user-username"
           aria-invalid="false"
           onChange={handleInput}
         />
-        <div id="user-email" className="sr-only">
-          Please enter a valid email. It must contain at least 6 characters.
+        <div id="user-username" className="sr-only">
+          Please enter a valid username. It must contain at least 6 characters.
         </div>
       </div>
       <div className="form_control">
