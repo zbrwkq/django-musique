@@ -3,7 +3,6 @@ import { useContext, createContext, useState } from "react";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("site") || "");
   const loginAction = async (data) => {
     try {
@@ -18,10 +17,9 @@ const AuthProvider = ({ children }) => {
         throw new Error("Network response was not ok");
       }
       const res = await response.json();
-      if (res.user) {
-        setUser(res.user);
-        setToken(res.token);
-        localStorage.setItem("site", res.token);
+      if (res.access) {
+        setToken(res.access);
+        localStorage.setItem("access", res.access);
         return;
       }
       throw new Error(res.message);
@@ -42,10 +40,9 @@ const AuthProvider = ({ children }) => {
         throw new Error("Network response was not ok");
       }
       const res = await response.json();
-      if (res.user) {
-        setUser(res.user);
+      if (res.access) {
         setToken(res.token);
-        localStorage.setItem("site", res.token);
+        localStorage.setItem("site", res.access);
         return;
       }
       throw new Error(res.message);
@@ -55,14 +52,13 @@ const AuthProvider = ({ children }) => {
   };
 
   const logOut = () => {
-    setUser(null);
     setToken("");
     localStorage.removeItem("site");
   };
 
   return (
     <AuthContext.Provider
-      value={{ token, user, loginAction, registerAction, logOut }}
+      value={{ token, loginAction, registerAction, logOut }}
     >
       {children}
     </AuthContext.Provider>

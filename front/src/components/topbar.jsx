@@ -6,7 +6,7 @@ import NavLink from "react-bootstrap/esm/NavLink";
 const Topbar = () => {
   const auth = useAuth();
   let authButtons;
-  if (auth.user) {
+  if (auth.token) {
     authButtons = (
       <Nav.Link onClick={() => auth.logOut()} href="/login">
         Se déconnecter
