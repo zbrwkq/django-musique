@@ -159,23 +159,25 @@ def add_comment(request):
     """
     data = request.data
 
+    print(data)
+
     id_user = data.get('id_user')
     rating = data.get('rating')
     comment = data.get('comment')
-    id_album = get_album_by_id_spotify(data.get('id_album')).get('id')
-    id_artist = data.get('id_artist')
-    id_track = data.get('id_track')
+    id_album = get_album_by_id_spotify(data.get('id_album')).get('id') if data.get('id_album') else 0
+    id_artist = get_artist_by_id_spotify(data.get('id_artist')).get('id') if data.get('id_artist') else 0
+    id_track = get_track_by_id_spotify(data.get('id_track')).get('id') if data.get('id_track') else 0
 
-    if rating is None or id_album is None:
+    if rating is None or id_album + id_album + id_album > 0:
         return Response({"error": "Rating and album ID are required."}, status=status.HTTP_400_BAD_REQUEST)
 
     new_comment = Comments(
         id_user=id_user,
         rating=rating,
         comment=comment,
-        id_album=id_album,
-        id_artist=id_artist,
-        id_track=id_track
+        id_album=id_album if id_album != 0 else None,
+        id_artist=id_artist if id_artist != 0 else None,
+        id_track=id_track if id_track != 0 else None,
     )
     new_comment.save()
 
