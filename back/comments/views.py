@@ -60,3 +60,9 @@ def get_comment(request, id):
     serializer = CommentsSerializer(comments, many=False)
 
     return Response({"Like" : serializer.data})
+
+@api_view(['POST'])
+def add_comment(request, id):
+    print(request)
+
+    return Response({"ok" : "ok"})

@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
+import CommentForm from '../../components/CommentForm';
+import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../../hooks/AuthProvider";
 
 const Album = ({ albumId }) => {
     const [album, setAlbum] = useState(null);
     const [error, setError] = useState(null);
 
     const { id } = useParams();
+    const auth = useAuth();
 
 
     useEffect(() => {
+        const decodedToken = jwtDecode(auth.token);
+        const userId = decodedToken.user_id;
+
         const fetchAlbum = async () => {
             try {
                 const response = await axios.get(`http://127.0.0.1:8000/albums/${id}/`);
                 setAlbum(response.data);
+                console.log(response.data)
             } catch (err) {
                 setError('Failed to fetch album details');
             }
@@ -32,10 +39,21 @@ const Album = ({ albumId }) => {
     }
 
     return (
-        <div id='album-page' className="w-100" style={{ height: '100vh', backgroundColor: '#1a1a1a', color: '#ffffff' }}>
-            <div className="album-container container text-white">
+        <div id='album-page' className="w-100 pt-5" style={{ height: '100vh', backgroundColor: '#1a1a1a', color: '#ffffff' }}>
+            <div className="album-container container text-white mt-5">
+                <div className='text-center'>
+                    <h1>{album.name}</h1>
+                    <h3>
+                        {album.artists.map((artist, index) => (
+                            <p key={artist.id}>
+                                {artist.name}
+                                {index < album.artists.length - 1 ? ',' : ''}
+                            </p>
+                        ))}
+                    </h3>
+                </div>
                 <div className="row">
-                    <div className="col-md-6 text-center pt-5">
+                    <div className="col-md-6 text-center">
                         {album.images && album.images.length > 0 && (
                             <img 
                                 src={album.images[0].url} 
@@ -46,28 +64,28 @@ const Album = ({ albumId }) => {
                             />
                         )}
                     </div>
-                    <div className="col-md-6 album-details">
-                        <h1>{album.name}</h1>
-                        <h2>Artists:</h2>
-                        <ul>
-                            {album.artists.map((artist) => (
-                                <li key={artist.id}>{artist.name}</li>
-                            ))}
-                        </ul>
+                    <div className="col-md-3 album-details mt-5">
                         <h2>Tracks:</h2>
                         <ul>
                             {album.tracks.items.map((track) => (
                                 <li key={track.id}>{track.name}</li>
                             ))}
                         </ul>
+                    </div>
+
+                    <div className="col-md-3 album-details mt-5">                    
                         <h2>Release Date:</h2>
                         <p>{album.release_date}</p>
-                        <h2>Total Tracks:</h2>
-                        <p>{album.total_tracks}</p>
+                        <h2>Label</h2>
+                        <p>{album.label}</p>
                         <h2>Genres:</h2>
                         <p>{album.genres.join(', ')}</p>
                     </div>
                 </div>
+            </div>
+
+            <div className='container mt-5'>
+                <CommentForm albumId={albumId} />
             </div>
         </div>
         
