@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../hooks/AuthProvider";
 import { jwtDecode } from "jwt-decode";
+import { Link } from "react-router-dom";
 
 const Albums = () => {
     const [albums, setAlbums] = useState([]);
@@ -63,7 +64,9 @@ const Albums = () => {
             <ul className="w-100 d-flex flex-wrap justify-content-between">
                 {albums.map((album) => (
                     <li key={album.id} style={{ listStyle: "none" }}>
-                        <img src={album.photo_url} alt="" width={300} height={300} />
+                        <Link to={`/album/${album.id_album}`}>
+                            <img src={album.photo_url} alt="" width={300} height={300} />
+                        </Link>
                         <p id="album_name">{album.name}</p>
                         <p id="album_artist">{album.artist}</p>
                         {auth.token && (

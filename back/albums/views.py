@@ -3,8 +3,7 @@ import requests
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .serializers import AlbumsSerializer
 from .models import Albums
@@ -25,8 +24,6 @@ def get_albums(request):
 def get_album(request, id):
     access_token = get_token()
 
-    print(access_token)
-
     album_url = f'https://api.spotify.com/v1/albums/{id}'
     headers = {
         'Authorization': f'Bearer {access_token}'
@@ -39,6 +36,11 @@ def get_album(request, id):
 
     album_data = response.json()
 
-    print(album_data)
-
     return Response(album_data)
+
+def get_album_by_id_spotify(id):
+    album = get_object_or_404(Albums, id_album=id)
+
+    serializer = AlbumsSerializer(album, many=False)
+
+    return serializer.data

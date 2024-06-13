@@ -4,14 +4,23 @@
 $spotify-black: #191414;
 $spotify-green: #1DB954;
 
+a {
+    text-decoration: none;
+    color: black;
+}
+
 // PAGE ALBUM //
 
-#album-page {
-    height: '100vh';
+#album-page .background {
+    height: 100%;
+    width: 100%;
     background: linear-gradient(to bottom, $spotify-green, $spotify-black, $spotify-black);
     color: '#ffffff';
     font-weight: bold;
     font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    position: fixed;
+    top:0;
+    z-index: -1;
 }
 
 #album-page h1,
@@ -29,4 +38,8 @@ $spotify-green: #1DB954;
     background-color: $spotify-black; 
     color: #ffffff;
     border: 1px solid #ffffff; 
+}
+
+#album-page .my-btn-suppr {
+    float: right;
 }
