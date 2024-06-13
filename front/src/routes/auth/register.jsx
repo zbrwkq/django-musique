@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
 
 const Register = () => {
@@ -15,18 +15,20 @@ const Register = () => {
     e.preventDefault();
     if (
       input.username !== "" &&
-      input.username.length > 6 &&
-      input.username.length < 40 &&
+      input.username.length >= 6 &&
+      input.username.length <= 40 &&
       input.password !== "" &&
-      input.password.length > 6 &&
-      input.password.length < 40
+      input.password.length >= 6 &&
+      input.password.length <= 40
     ) {
       const result = await auth.registerAction(input);
       if (result.success) {
         navigate("/");
       } else {
-        alert('Erreur lors de l\'inscription \rError message: ' + result.message);
-        return; 
+        alert(
+          "Erreur lors de l'inscription \rError message: " + result.message
+        );
+        return;
       }
     } else {
       alert(
@@ -46,7 +48,7 @@ const Register = () => {
     <Container>
       <Form onSubmit={handleSubmitEvent}>
         <Form.Group className="mt-3">
-          <Form.Label for="user-username">
+          <Form.Label htmlFor="user-username">
             Entrer votre nom d'utilisateur
           </Form.Label>
           <Form.Control
@@ -65,7 +67,9 @@ const Register = () => {
           </Form.Text>
         </Form.Group>
         <Form.Group className="mt-3">
-          <Form.Label for="user-password">Entrer votre mot de passe</Form.Label>
+          <Form.Label htmlFor="user-password">
+            Entrer votre mot de passe
+          </Form.Label>
           <Form.Control
             type="password"
             id="user-password"
@@ -80,9 +84,14 @@ const Register = () => {
             Le mot de passe doit contenir au moins 6 caractères
           </Form.Text>
         </Form.Group>
-        <Button type="submit" variant="primary" className="mt-4">
-          S'inscrire
-        </Button>
+        <div className="mt-3 d-flex flex-column align-items-center">
+          <Button type="submit" variant="primary" className="mx-auto">
+            S'inscrire
+          </Button>
+          <NavLink to="/login" className="mt-2">
+            Se connecter
+          </NavLink>
+        </div>
       </Form>
     </Container>
   );
