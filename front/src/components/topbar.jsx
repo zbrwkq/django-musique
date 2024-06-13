@@ -1,7 +1,7 @@
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { useAuth } from "../hooks/AuthProvider";
-import NavLink from "react-bootstrap/esm/NavLink";
+import { Container } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 const Topbar = () => {
@@ -19,9 +19,6 @@ const Topbar = () => {
         <Nav.Link onClick={() => auth.logOut()} href="/login">
           Se déconnecter
         </Nav.Link>
-        <NavLink href="/albums">Albums</NavLink>
-        <NavLink href="/artists">Artistes</NavLink>
-        <NavLink href="/tracks">Musiques</NavLink>
       </>
     );
   } else {
@@ -35,12 +32,18 @@ const Topbar = () => {
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
-      <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
+      <Container>
+        <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
 
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="me-auto">{authButtons}</Nav>
-      </Navbar.Collapse>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto">
+            <Nav.Link href="/albums">Albums</Nav.Link>
+            <Nav.Link href="/artists">Artistes</Nav.Link>
+            <Nav.Link href="/tracks">Musiques</Nav.Link>
+            {authButtons}
+          </Nav>
+        </Navbar.Collapse>
     </Navbar>
   );
 };
