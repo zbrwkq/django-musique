@@ -4,4 +4,4 @@ from .models import Tracks
 class TracksSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tracks
-        fields = ['id', 'name', 'spotify_id']
+        fields = '__all__'
