@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
 import CommentForm from '../../components/CommentForm';
 import Comment from '../../components/Comment';
-import { NavLink } from "react-router-dom";
 
 const Album = () => {
     const [album, setAlbum] = useState(null);

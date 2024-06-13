@@ -4,7 +4,7 @@ import { StarFill, Star } from 'react-bootstrap-icons';
 import { useAuth } from "../hooks/AuthProvider";
 import { jwtDecode } from "jwt-decode";
 
-const CommentForm = ({ albumId, onAdd }) => {
+const CommentForm = ({ albumId, onAdd, artistId, trackId }) => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
     const [hoverRating, setHoverRating] = useState(0);
@@ -22,7 +22,9 @@ const CommentForm = ({ albumId, onAdd }) => {
                 id_user: userId, 
                 rating,
                 comment,
-                id_album: albumId
+                id_album: albumId,
+                id_artist: artistId,
+                id_track: trackId,
             },{
                 headers: { Authorization: `Bearer ${auth.token}` }
             } );
