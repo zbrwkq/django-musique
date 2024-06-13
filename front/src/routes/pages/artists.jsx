@@ -22,6 +22,7 @@ const Artists = () => {
       try {
         const response = await axios.get("http://127.0.0.1:8000/artists/");
         setArtists(response.data.Artists);
+        setLoading(false);
       } catch (err) {
         setError(err.message);
         setLoading(false);
@@ -41,7 +42,6 @@ const Artists = () => {
           const response = await axios.get(
             "http://127.0.0.1:8000/likes/user/artists/" + userId
           );
-          console.log(response.data);
           setLikes(response.data.liked_artists);
           setLoading(false);
         } catch (err) {
