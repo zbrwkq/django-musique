@@ -57,8 +57,8 @@ const Home = () => {
             <Card className="summary-card">
               <Card.Body>
                 <Card.Text>
-                  Évaluez chaque album sur une échelle de cinq étoiles (avec
-                  moitiés) pour enregistrer et partager votre réaction
+                  Évaluez chaque album sur une échelle de cinq étoiles pour
+                  enregistrer et partager votre réaction
                 </Card.Text>
               </Card.Body>
             </Card>

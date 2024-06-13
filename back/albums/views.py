@@ -25,7 +25,6 @@ def get_albums(request):
 def get_album(request, id):
     access_token = get_token()
 
-    print(access_token)
 
     album_url = f'https://api.spotify.com/v1/albums/{id}'
     headers = {
@@ -39,6 +38,5 @@ def get_album(request, id):
 
     album_data = response.json()
 
-    print(album_data)
 
     return Response(album_data)
