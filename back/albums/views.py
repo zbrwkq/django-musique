@@ -1,7 +1,7 @@
 import requests
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .serializers import AlbumsSerializer
 from .models import Albums
 from spotify.views import get_token
@@ -44,4 +44,13 @@ def get_album(request, id):
         return render(request, 'error.html', {'message': 'Failed to fetch album details'})
 
     album_data = response.json()
+
     return Response(album_data)
+
+def get_album_by_id_spotify(id):
+    album = get_object_or_404(Albums, id_album=id)
+
+    serializer = AlbumsSerializer(album, many=False)
+
+    return serializer.data
+

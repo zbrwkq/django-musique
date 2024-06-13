@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 class Comments(models.Model):
     id_user = models.IntegerField(default=0, null=False)
@@ -7,6 +8,7 @@ class Comments(models.Model):
     id_album = models.IntegerField(blank=True, null=True)
     id_artist = models.IntegerField(blank=True, null=True)
     id_track = models.IntegerField(blank=True, null=True)
+    date = models.DateField(blank=False, null=False, default=datetime.date.today)
 
     def __str__(self):
         return self.name
