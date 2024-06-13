@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 
 const Profil = () => {
     const [users, setUsers] = useState([]);
-    const [friends, setFriends] = useState([]);
+    const [friends, setFriends] = useState({});
     const [error, setError] = useState(null);
     const auth = useAuth();
 
@@ -30,8 +30,11 @@ const Profil = () => {
             const fetchFriends = async () => {
                 try {
                     const response = await axios.get(`http://127.0.0.1:8000/follows/follows/${userId}`);
-                    console.log(response.data.Follows);
-                    setFriends(response.data.Follows);
+                    const friendsMap = {};
+                    response.data.Follows.forEach(follow => {
+                        friendsMap[follow.id_follow] = true;
+                    });
+                    setFriends(friendsMap);
                 } catch (err) {
                     setError(err.message);
                 }
@@ -47,17 +50,20 @@ const Profil = () => {
                 headers: { Authorization: `Bearer ${auth.token}` }
             });
             if (response.data.message === 'Ami ajouté') {
-                setFriends([...friends, friendUserId]);
+                setFriends({ ...friends, [friendUserId]: true });
             } else {
-                setFriends(friends.filter(id => id !== friendUserId));
+                const updatedFriends = { ...friends };
+                delete updatedFriends[friendUserId];
+                setFriends(updatedFriends);
             }
         } catch (error) {
             console.error("There was an error toggling the friend status!", error);
         }
     };
 
-    const friendsList = users.length > 0 ? users.filter(user => friends.includes(user.id)) : [];
-    const otherUsersList = users.length > 0 ? users.filter(user => !friends.includes(user.id)) : [];
+    const friendsIds = Object.keys(friends);
+    const friendsList = users.filter(user => friendsIds.includes(user.id.toString()));
+    const otherUsersList = users.filter(user => !friendsIds.includes(user.id.toString()));
 
     return (
         <div>
