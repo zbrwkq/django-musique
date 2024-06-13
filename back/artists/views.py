@@ -90,3 +90,10 @@ def get_artist_by_id(request, id):
     serializer = ArtistsSerializer(artist, many=False)
 
     return Response({"Artist" : serializer.data})
+
+def get_artist_by_id_spotify(id):
+    artist = get_object_or_404(Artists, spotify_id=id)
+
+    serializer = ArtistsSerializer(artist, many=False)
+
+    return serializer.data
