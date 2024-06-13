@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 const Artist = ({ artistId }) => {
   const [artist, setArtist] = useState(null);
@@ -32,36 +31,61 @@ const Artist = ({ artistId }) => {
     return <div>Loading...</div>;
   }
   return (
-    <Container>
-      <div
-        id="artist-page"
-        className="w-100"
-        style={{
-          height: "100vh",
-          backgroundColor: "#1a1a1a",
-          color: "#ffffff",
-        }}
-      >
-        <div className="artist-container container text-white">
-          <div className="row">
-            <div className="col-md-6 text-center pt-5">
-              {artist.photo_url && artist.photo_url.length > 0 && (
-                <img
-                  src={artist.photo_url[0].url}
-                  alt={artist.name}
-                  className="img-fluid artist-cover mt-5"
-                  width={500}
-                  height={500}
-                />
-              )}
-            </div>
-            <div className="col-md-6 artist-details">
-              <h1>{artist.name}</h1>
-            </div>
+    <div
+      id="preview-page"
+      className="w-100 pt-5"
+      style={{
+        height: "100vh",
+        backgroundColor: "#1a1a1a",
+        color: "#ffffff",
+      }}
+    >
+      <div className="artist-container container text-white mt-5">
+        <div className="text-center">
+          <h1>{artist.name}</h1>
+        </div>
+        <div className="row">
+          <div className="col-md-6 text-center">
+            {artist.images && artist.images.length > 0 && (
+              <img
+                src={artist.images[0].url}
+                alt={artist.name}
+                className="img-fluid artist-cover mt-5"
+                width={500}
+                height={500}
+              />
+            )}
+          </div>
+          <div className="col-md-3 artist-details mt-5">
+            <h2>Top Tracks:</h2>
+            <ul>
+              {artist.top_tracks.tracks.map((track) => (
+                <li key={track.id}>
+                  <NavLink to={`/track/${track.id}`}>{track.name}</NavLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="col-md-3 album-details mt-5">
+            <h2>Genres:</h2>
+            <p>{artist.genres.join(", ")}</p>
           </div>
         </div>
       </div>
-    </Container>
+
+      <div className="container mt-5">
+        <h2>Derniers albums</h2>
+        <div className="w-100 d-flex flex-wrap justify-content-between">
+          {artist.albums.items.map((album) => (
+            <NavLink to={`/album/${album.id}`} key={album.id}>
+              <img src={album.images[0].url} alt="" width={300} height={300} />
+              <p id="album_name">{album.name}</p>
+              <p id="album_artist">{album.artist}</p>
+            </NavLink>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
