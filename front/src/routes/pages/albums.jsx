@@ -46,7 +46,9 @@ const Albums = () => {
     }
   }, [auth.token]);
 
-  const handleLike = async (albumId) => {
+  const handleLike = async (albumId, event) => {
+    event.preventDefault();
+    event.stopPropagation();
     try {
       const response = await axios.post(
         `http://127.0.0.1:8000/likes/like/${albumId}/`,
@@ -69,22 +71,36 @@ const Albums = () => {
     <div className="w-100 container">
       <ul className="w-100 d-flex flex-wrap justify-content-between">
         {albums.map((album) => (
-          <li key={album.id} style={{ listStyle: "none" }}>
+          <li
+            key={album.id}
+            className="mb-3"
+            style={{ listStyle: "none", width: "300px" }}
+          >
             <NavLink to={`/album/${album.id_album}`}>
               <img src={album.photo_url} alt="" width={300} height={300} />
+              <p
+                id="album_name"
+                className="display-6 m-0"
+                style={{ textWrap: "balance" }}
+              >
+                {album.name}
+                {auth.token && (
+                  <FontAwesomeIcon
+                    icon={faHeart}
+                    onClick={(e) => handleLike(album.id, e)}
+                    style={{
+                      color: likedAlbums.includes(album.id) ? "red" : "grey",
+                      cursor: "pointer",
+                      fontSize: "1.5rem",
+                    }}
+                    className="mx-3"
+                  />
+                )}
+              </p>
             </NavLink>
-            <p id="album_name">{album.name}</p>
-            <p id="album_artist">{album.artist}</p>
-            {auth.token && (
-              <FontAwesomeIcon
-                icon={faHeart}
-                onClick={() => handleLike(album.id)}
-                style={{
-                  color: likedAlbums.includes(album.id) ? "red" : "grey",
-                  cursor: "pointer",
-                }}
-              />
-            )}
+            <NavLink to={`/artist/${album.id_artist}`} id="album_artist">
+              <p className="m-0">{album.artist}</p>
+            </NavLink>
           </li>
         ))}
       </ul>

@@ -85,8 +85,9 @@ const Artist = ({ artistId }) => {
               }}
             >
               <img src={album.images[0].url} alt="" width={300} height={300} />
-              <p id="album_name">{album.name}</p>
-              <p id="album_artist">{album.artist}</p>
+              <p id="album_name" className="lead">
+                {album.name}
+              </p>
             </NavLink>
           ))}
         </div>

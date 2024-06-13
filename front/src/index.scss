@@ -1,19 +1,14 @@
 @import "~bootstrap/scss/bootstrap";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 
-$spotify-black: #191414;
+$spotify-black: #141719;
 $spotify-green: #1db954;
 
 // PAGE ALBUM //
 
 #preview-page {
   height: "100vh";
-  background: linear-gradient(
-    to bottom,
-    $spotify-green,
-    $spotify-black,
-    $spotify-black
-  );
+  background: linear-gradient(to bottom, $spotify-green, $spotify-black, $dark);
   color: "#ffffff";
   font-weight: bold;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -34,4 +29,13 @@ $spotify-green: #1db954;
   background-color: $spotify-black;
   color: #ffffff;
   border: 1px solid #ffffff;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: linear 0.2s;
+}
+
+a:hover {
+  color: $primary;
 }
