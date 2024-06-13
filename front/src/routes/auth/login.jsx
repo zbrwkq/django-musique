@@ -11,7 +11,8 @@ const Login = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  const handleSubmitEvent = (e) => {
+  // Gestion de la connexion
+  const handleSubmitEvent = async (e) => {
     e.preventDefault();
     if (
       input.username !== "" &&
@@ -21,18 +22,21 @@ const Login = () => {
       input.password.length >= 6 &&
       input.password.length <= 40
     ) {
-      if (auth.loginAction(input)) {
+      const result = await auth.loginAction(input);
+      if (result.success) {
         navigate("/");
         return;
+      } else {
+        alert(
+          "Une erreur est survenue lors de la connexion a votre compte, veuillez réessayer plus tard"
+        );
       }
-      alert(
-        "Une erreur est survenue lors de la connexion a votre compte, veuillez réessayer plus tard"
-      );
       return;
     }
     alert("Veuillez saisir des informations correctes");
     return;
   };
+
 
   const handleInput = (e) => {
     const { name, value } = e.target;

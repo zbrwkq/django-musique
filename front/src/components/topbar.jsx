@@ -1,17 +1,25 @@
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { useAuth } from "../hooks/AuthProvider";
-import NavLink from "react-bootstrap/esm/NavLink";
 import { Container } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 
 const Topbar = () => {
   const auth = useAuth();
+  const [isAuthenticated, setIsAuthenticated] = useState(!!auth.token);
+
+  useEffect(() => {
+    setIsAuthenticated(!!auth.token);
+  }, [auth.token]);
+
   let authButtons;
-  if (auth.token) {
+  if (isAuthenticated) {
     authButtons = (
-      <Nav.Link onClick={() => auth.logOut()} href="/login">
-        Se déconnecter
-      </Nav.Link>
+      <>
+        <Nav.Link onClick={() => auth.logOut()} href="/login">
+          Se déconnecter
+        </Nav.Link>
+      </>
     );
   } else {
     authButtons = (
@@ -21,6 +29,7 @@ const Topbar = () => {
       </>
     );
   }
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -28,14 +37,13 @@ const Topbar = () => {
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="ms-auto">
+            <Nav.Link href="/albums">Albums</Nav.Link>
+            <Nav.Link href="/artists">Artistes</Nav.Link>
+            <Nav.Link href="/tracks">Musiques</Nav.Link>
             {authButtons}
-            <NavLink href="/albums">Albums</NavLink>
-            <NavLink href="/artists">Artistes</NavLink>
-            <NavLink href="/tracks">Musiques</NavLink>
           </Nav>
         </Navbar.Collapse>
-      </Container>
     </Navbar>
   );
 };

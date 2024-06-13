@@ -1,6 +1,7 @@
 from django.db import models
 
 class Albums(models.Model):
+    id_album = models.CharField(max_length=200, default="", blank=False)
     name = models.CharField(max_length=200, default="", blank=False)
     photo_url = models.URLField(max_length=200, blank=True, null=True)
     artist = models.CharField(max_length=200, default="", blank=False)

@@ -8,6 +8,7 @@ import Login from "./routes/auth/login";
 import Topbar from "./components/topbar";
 import Register from "./routes/auth/register";
 import Albums from "./routes/pages/albums";
+import Album from "./routes/pages/album";
 import Artists from "./routes/pages/artists";
 import Tracks from "./routes/pages/tracks";
 import Home from "./routes/pages/home/home";
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/albums",
     element: <Albums />,
+  },
+  {
+    path: "/album/:id",
+    element: <Album />,
   },
   {
     path: "/artists",
