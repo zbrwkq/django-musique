@@ -1,7 +1,7 @@
 @import "~bootstrap/scss/bootstrap";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 
-$spotify-black: #191414;
+$spotify-black: #141719;
 $spotify-green: #1db954;
 
 a {
@@ -51,4 +51,12 @@ a {
   color: #ffffff;
   border: 1px solid #ffffff;
 }
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: linear 0.2s;
+}
 
+a:hover {
+  color: $primary;
+}

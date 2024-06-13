@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../hooks/AuthProvider";
 import { jwtDecode } from "jwt-decode";
 import { NavLink } from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 
 const Artists = () => {
   const [artists, setArtists] = useState([]);
@@ -58,7 +60,9 @@ const Artists = () => {
     setCurrentPage(1);
   };
 
-  const handleLike = async (artistId) => {
+  const handleLike = async (artistId, event) => {
+    event.preventDefault();
+    event.stopPropagation();
     try {
       const response = await axios.post(
         `http://127.0.0.1:8000/likes/like_artist/${artistId}/`,
@@ -102,29 +106,46 @@ const Artists = () => {
 
   return (
     <div className="w-100 container">
-      <input
-        type="text"
-        placeholder="Rechercher..."
-        value={searchTerm}
-        onChange={handleSearch}
-      />
+      <InputGroup className="my-3">
+        <Form.Control
+          type="text"
+          placeholder="Rechercher..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+        <InputGroup.Text>
+          <FontAwesomeIcon icon={faSearch} />
+        </InputGroup.Text>
+      </InputGroup>
       <ul className="w-100 d-flex flex-wrap justify-content-between">
         {currentArtists.map((artist) => (
-          <li key={artist.id} style={{ listStyle: "none" }}>
+          <li
+            key={artist.id}
+            style={{ listStyle: "none", width: "300px" }}
+            className="mb-3"
+          >
             <NavLink to={`/artist/${artist.spotify_id}`}>
               <img src={artist.photo_url} alt="" width={300} height={300} />
+              <p
+                id="artist_name"
+                className="display-6 m-0"
+                style={{ textWrap: "balance" }}
+              >
+                {artist.name}
+                {auth.token && (
+                  <FontAwesomeIcon
+                    icon={faHeart}
+                    onClick={(e) => handleLike(artist.id, e)}
+                    style={{
+                      color: likes.includes(artist.id) ? "red" : "grey",
+                      cursor: "pointer",
+                      fontSize: "1.5rem",
+                    }}
+                    className="mx-3"
+                  />
+                )}
+              </p>
             </NavLink>
-            <p id="artist_name">{artist.name}</p>
-            {auth.token && (
-              <FontAwesomeIcon
-                icon={faHeart}
-                onClick={() => handleLike(artist.id)}
-                style={{
-                  color: likes.includes(artist.id) ? "red" : "grey",
-                  cursor: "pointer",
-                }}
-              />
-            )}
           </li>
         ))}
       </ul>

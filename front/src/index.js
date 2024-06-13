@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.scss";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.scss";
 import AuthProvider from "./hooks/AuthProvider";
 import Login from "./routes/auth/login";
 import Topbar from "./components/topbar";
