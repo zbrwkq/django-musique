@@ -11,16 +11,16 @@ const Album = () => {
 
     const { id } = useParams();
 
-  useEffect(() => {
-    const fetchAlbum = async () => {
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/albums/${id}/`);
-        setAlbum(response.data);
-        console.log(response.data);
-      } catch (err) {
-        setError("Failed to fetch album details");
-      }
-    }
+    useEffect(() => {
+        const fetchAlbum = async () => {
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/albums/${id}/`);
+                setAlbum(response.data);
+                console.log(response.data);
+            } catch (err) {
+                setError("Failed to fetch album details");
+            }
+        }
 
         const fetchComments = async () => {
             try {
@@ -36,7 +36,7 @@ const Album = () => {
     }, []);
 
     const handleAddComment = (newComment) => {
-        setComments([newComment, ...comments, ])
+        setComments([newComment, ...comments,])
     };
 
     const handleDeleteComment = (deletedCommentId) => {
@@ -59,10 +59,10 @@ const Album = () => {
                     <h1>{album.name}</h1>
                     <h3>
                         {album.artists.map((artist, index) => (
-                          <NavLink to={`/artist/${artist.id}`} key={artist.id}>
-                            {artist.name}
-                            {index < album.artists.length - 1 ? "," : ""}
-                          </NavLink>
+                            <NavLink to={`/artist/${artist.id}`} key={artist.id}>
+                                {artist.name}
+                                {index < album.artists.length - 1 ? "," : ""}
+                            </NavLink>
                         ))}
                     </h3>
                 </div>
@@ -106,7 +106,7 @@ const Album = () => {
                 <h2>Commentaires</h2>
                 {comments.length > 0 ? (
                     comments.map((comment) => (
-                        <Comment key={comment.id} comment={comment} onDelete={handleDeleteComment}/>
+                        <Comment key={comment.id} comment={comment} onDelete={handleDeleteComment} />
                     ))
                 ) : (
                     <p>Pas de commentaire, soyez le premier à noter cet album !</p>
