@@ -10,14 +10,19 @@ const Register = () => {
   const navigate = useNavigate();
 
   const auth = useAuth();
-  const handleSubmitEvent = (e) => {
+  const handleSubmitEvent = async (e) => {
     e.preventDefault();
     if (input.username !== "" && input.password !== "") {
-      auth.registerAction(input);
-      navigate("/");
-      return;
+      const result = await auth.registerAction(input);
+      if (result.success) {
+        navigate("/");
+      } else {
+        alert('Erreur lors de l\'inscription \rError message: ' + result.message);
+        return;
+      }
+    } else {
+      alert("please provide a valid input");
     }
-    alert("please provide a valid input");
   };
 
   const handleInput = (e) => {

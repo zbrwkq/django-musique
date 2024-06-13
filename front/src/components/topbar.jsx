@@ -2,15 +2,27 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { useAuth } from "../hooks/AuthProvider";
 import NavLink from "react-bootstrap/esm/NavLink";
+import React, { useEffect, useState } from "react";
 
 const Topbar = () => {
   const auth = useAuth();
+  const [isAuthenticated, setIsAuthenticated] = useState(!!auth.token);
+
+  useEffect(() => {
+    setIsAuthenticated(!!auth.token);
+  }, [auth.token]);
+
   let authButtons;
-  if (auth.token) {
+  if (isAuthenticated) {
     authButtons = (
-      <Nav.Link onClick={() => auth.logOut()} href="/login">
-        Se déconnecter
-      </Nav.Link>
+      <>
+        <Nav.Link onClick={() => auth.logOut()} href="/login">
+          Se déconnecter
+        </Nav.Link>
+        <NavLink href="/albums">Albums</NavLink>
+        <NavLink href="/artists">Artistes</NavLink>
+        <NavLink href="/tracks">Musiques</NavLink>
+      </>
     );
   } else {
     authButtons = (
@@ -28,9 +40,6 @@ const Topbar = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
           {authButtons}
-          <NavLink href="/albums">Albums</NavLink>
-          <NavLink href="/artists">Artistes</NavLink>
-          <NavLink href="/tracks">Musiques</NavLink>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

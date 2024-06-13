@@ -10,15 +10,21 @@ const Login = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  const handleSubmitEvent = (e) => {
+  // Gestion de la connexion
+  const handleSubmitEvent = async (e) => {
     e.preventDefault();
     if (input.username !== "" && input.password !== "") {
-      auth.loginAction(input);
-      navigate("/");
+      const result = await auth.loginAction(input);
+      if (result.success) {
+        navigate("/");
+      } else {
+        alert("Utilisateur ou mot de passe incorrect");
+      }
       return;
     }
     alert("please provide a valid input");
   };
+
 
   const handleInput = (e) => {
     const { name, value } = e.target;
