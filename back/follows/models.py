@@ -5,5 +5,5 @@ class Follows(models.Model):
     id_follow = models.IntegerField(default=0, null=False)
 
     def __str__(self):
-        return self.name
+        return f"Follow de l'utilisateur {self.id_user} sur l'utilisateur {self.id_follow}"
 

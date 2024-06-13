@@ -17,7 +17,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 def get_users(request):
     users = User.objects.all()
 
-    serializer = UsersSerializer(users, many=True)
+    serializer = UsersSerializer(users, many=True) 
 
     return Response({"Users" : serializer.data})
 

@@ -11,6 +11,7 @@ import Register from "./routes/auth/register";
 import Albums from "./routes/pages/albums";
 import Artists from "./routes/pages/artists";
 import Tracks from "./routes/pages/tracks";
+import Profil from "./routes/pages/profil";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/tracks",
     element: <Tracks />,
+  },
+  {
+    path: "/profil",
+    element: <Profil />,
   },
 ]);
 
