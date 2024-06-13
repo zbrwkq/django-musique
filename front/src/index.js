@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.scss";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.scss";
 import AuthProvider from "./hooks/AuthProvider";
 import Login from "./routes/auth/login";
 import Topbar from "./components/topbar";
@@ -14,6 +14,7 @@ import Tracks from "./routes/pages/tracks";
 import Profil from "./routes/pages/profil";
 import Home from "./routes/pages/home/home";
 import Artist from "./routes/pages/artist";
+import Friend from "./routes/pages/friend";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
     path: "/profil",
     element: <Profil />,
   },
+  {
+    path: "/friend/:friendId",
+    element: <Friend />
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

@@ -1,29 +1,39 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { StarFill, Star } from 'react-bootstrap-icons';
+import { useAuth } from "../hooks/AuthProvider";
+import { jwtDecode } from "jwt-decode";
 
-const CommentForm = ({ albumId }) => {
+const CommentForm = ({ albumId, onAdd, artistId, trackId }) => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
     const [hoverRating, setHoverRating] = useState(0);
 
+    const auth = useAuth(); 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(`Rating: ${rating}, Comment: ${comment}`);
-
+        const decodedToken = jwtDecode(auth.token);
+        const userId = decodedToken.user_id;
+    
         try {
-            await axios.post('http://127.0.0.1:8000/comments/add/', {
-                id_user: 1, 
+            var response = await axios.post('http://127.0.0.1:8000/comments/add/', {
+                id_user: userId, 
                 rating,
                 comment,
-                id_album: albumId
-            });
-            alert('Comment added successfully!');
-            window.location.reload();
+                id_album: albumId,
+                id_artist: artistId,
+                id_track: trackId,
+            },{
+                headers: { Authorization: `Bearer ${auth.token}` }
+            } );
+            onAdd(response.data);
+            setRating(0);
+            setComment('');
         } catch (error) {
             console.error('Error adding comment:', error);
-            alert('Failed to add comment. Please try again.');
+            alert("L'ajout du commentaire a échoué. Essayez de nouveau.");
         }
     };
 
@@ -38,6 +48,14 @@ const CommentForm = ({ albumId }) => {
     const handleMouseLeave = () => {
         setHoverRating(0);
     };
+
+    if (!auth.token) {
+        return (
+            <div>
+                Veuillez vous <a href="../login">Connecter</a> ou vous  <a href="../register">Inscrire</a> pour pouvoir donner un avis
+            </div>
+        )
+    }
 
     return (
         <div className="mt-5">
@@ -67,7 +85,6 @@ const CommentForm = ({ albumId }) => {
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                         rows="3"
-                        required
                     ></textarea>
                 </div>
                 <button type="submit" className="btn btn-primary mt-3">Envoyer</button>
