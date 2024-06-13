@@ -104,7 +104,7 @@ const Tracks = () => {
                 </thead>
                 <tbody>
                     {tracks.map((track) => (
-                        <tr key={track.id}>
+                        <tr key={track.spotify_id}>
                             <td>{track.name}</td>
                             <td>
                             {auth.token && (
