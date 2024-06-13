@@ -32,15 +32,14 @@ const Topbar = () => {
       </>
     );
   }
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
 
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="me-auto">
-          {authButtons}
-        </Nav>
+        <Nav className="me-auto">{authButtons}</Nav>
       </Navbar.Collapse>
     </Navbar>
   );
