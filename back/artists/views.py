@@ -26,3 +26,12 @@ def get_artist(request, id):
     serializer = ArtistsSerializer(artists, many=False)
 
     return Response({"Artist" : serializer.data})
+
+
+@api_view(['GET'])
+def get_artist_by_id(request, id):
+    artist = get_object_or_404(Artists, id=id)
+
+    serializer = ArtistsSerializer(artist, many=False)
+
+    return Response({"Artist" : serializer.data})

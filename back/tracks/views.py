@@ -25,3 +25,12 @@ def get_track(request, id):
     serializer = TracksSerializer(tracks, many=False)
 
     return Response({"Track" : serializer.data})
+
+
+@api_view(['GET'])
+def get_track_by_id(request, id):
+    track = get_object_or_404(Tracks, id=id)
+
+    serializer = TracksSerializer(track, many=False)
+
+    return Response({"Track" : serializer.data})

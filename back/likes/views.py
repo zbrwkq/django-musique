@@ -103,15 +103,15 @@ def like_track(request, track_id):
 
 @api_view(['GET'])
 def get_artists_likes_by_user(request, id_user):
-    liked_artists = Likes.objects.filter(id_user=id_user).values_list('id_artist', flat=True).distinct()
+    liked_artists = Likes.objects.filter(id_user=id_user).exclude(id_artist__isnull=True).values_list('id_artist', flat=True).distinct()
     return Response({'liked_artists': liked_artists})
 
 @api_view(['GET'])
 def get_albums_likes_by_user(request, id_user):
-    liked_albums = Likes.objects.filter(id_user=id_user).values_list('id_album', flat=True).distinct()
+    liked_albums = Likes.objects.filter(id_user=id_user).exclude(id_album__isnull=True).values_list('id_album', flat=True).distinct()
     return Response({'liked_albums': liked_albums})
     
 @api_view(['GET'])
 def get_tracks_likes_by_user(request, id_user):
-    liked_tracks = Likes.objects.filter(id_user=id_user).values_list('id_track', flat=True).distinct()
+    liked_tracks = Likes.objects.filter(id_user=id_user).exclude(id_track__isnull=True).values_list('id_track', flat=True).distinct()
     return Response({'liked_tracks': liked_tracks})
