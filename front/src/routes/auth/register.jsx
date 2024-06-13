@@ -15,11 +15,11 @@ const Register = () => {
     e.preventDefault();
     if (
       input.username !== "" &&
-      input.username.length < 6 &&
-      input.username.length > 40 &&
+      input.username.length > 6 &&
+      input.username.length < 40 &&
       input.password !== "" &&
-      input.password.length < 6 &&
-      input.password.length > 40
+      input.password.length > 6 &&
+      input.password.length < 40
     ) {
       const result = await auth.registerAction(input);
       if (result.success) {
@@ -28,10 +28,11 @@ const Register = () => {
         alert('Erreur lors de l\'inscription \rError message: ' + result.message);
         return; 
       }
+    } else {
+      alert(
+        "Le nom d'utilisateur doit contenir entre 6 et 40 caractères et le mot de passe doit contenir entre 6 et 40 caractères."
+      );
     }
-    alert(
-      "Une erreur est survenue lors de la création de votre compte, veuillez réessayer plus tard"
-    );
   };
 
   const handleInput = (e) => {
