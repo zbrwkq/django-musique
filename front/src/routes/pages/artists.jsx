@@ -15,7 +15,7 @@ const Artists = () => {
   const [artistsPerPage] = useState(20);
   const [likes, setLikes] = useState([]);
 
-    const auth = useAuth();
+  const auth = useAuth();
 
   useEffect(() => {
     const fetchArtists = async () => {
@@ -32,31 +32,31 @@ const Artists = () => {
   }, []);
 
   useEffect(() => {
-        if (auth.token){
-            const decodedToken = jwtDecode(auth.token);
-            const userId = decodedToken.user_id;
-            
-            const fetchArtistsLikes = async () => {
-                try {
-                    const response = await axios.get("http://127.0.0.1:8000/likes/user/artists/" + userId)
-                    console.log(response.data)
-                    setLikes(response.data.liked_artists)
-                    setLoading(false);
-                } catch (err) {
-                    setError(err.message);
-                    setLoading(false);
-                }
-            }
-      };
+    if (auth.token) {
+      const decodedToken = jwtDecode(auth.token);
+      const userId = decodedToken.user_id;
 
+      const fetchArtistsLikes = async () => {
+        try {
+          const response = await axios.get(
+            "http://127.0.0.1:8000/likes/user/artists/" + userId
+          );
+          console.log(response.data);
+          setLikes(response.data.liked_artists);
+          setLoading(false);
+        } catch (err) {
+          setError(err.message);
+          setLoading(false);
+        }
+      };
       fetchArtistsLikes();
     }
   }, [auth.token]);
-  
-    const handleSearch = (event) => {
-        setSearchTerm(event.target.value);
-        setCurrentPage(1);
-    };
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1);
+  };
 
   const handleLike = async (artistId) => {
     try {
