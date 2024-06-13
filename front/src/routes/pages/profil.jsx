@@ -21,18 +21,15 @@ const Profil = () => {
         fetchUsers();
     }, [auth.token]);
 
-    const toggleFriend = async () => {
-        const decodedToken = jwtDecode(auth.token);
-        const userId = decodedToken.user_id;
-
+    const toggleFriend = async (friendUserId) => {
         try {
-            const response = await axios.post(`http://localhost:8000/follows/toggle_friend/${userId}/`, {}, {
+            const response = await axios.post(`http://localhost:8000/follows/toggle_friend/${friendUserId}/`, {}, {
                 headers: { Authorization: `Bearer ${auth.token}` }
             });
             if (response.data.message === 'Ami ajouté') {
-                setFriends([...friends, userId]);
+                setFriends([...friends, friendUserId]);
             } else {
-                setFriends(friends.filter(id => id !== userId));
+                setFriends(friends.filter(id => id !== friendUserId));
             }
         } catch (error) {
             console.error("There was an error toggling the friend status!", error);
@@ -44,12 +41,13 @@ const Profil = () => {
             <h1>Profil</h1>
             <ul>
                 {users.map(user => (
-                    <li>
-                        {user.username} - {user.email}
-                        <button id={user.id} onClick={() => toggleFriend()}>
+                    <li key={user.id}>
+                        {user.username} - {user.id}
+                        <button onClick={() => toggleFriend(user.id)}>
                             {friends.includes(user.id) ? 'Supprimer des amis' : 'Ajouter en ami'}
                         </button>
                     </li>
+                    
                 ))}
             </ul>
         </div>
