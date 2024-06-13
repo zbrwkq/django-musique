@@ -89,7 +89,7 @@ def get_comments_by_artist(request, id_artist):
 
 
 @api_view(['GET'])
-def get_comments_by_album(request, id_album):
+def get_comments_by_album(request, id):
     """
     get:
     Retourne la liste des commentaires pour un album spécifique.
