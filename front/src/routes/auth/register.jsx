@@ -15,11 +15,11 @@ const Register = () => {
     e.preventDefault();
     if (
       input.username !== "" &&
-      input.username.length > 6 &&
-      input.username.length < 40 &&
+      input.username.length >= 6 &&
+      input.username.length <= 40 &&
       input.password !== "" &&
-      input.password.length > 6 &&
-      input.password.length < 40
+      input.password.length >= 6 &&
+      input.password.length <= 40
     ) {
       const result = await auth.registerAction(input);
       if (result.success) {
@@ -48,7 +48,7 @@ const Register = () => {
     <Container>
       <Form onSubmit={handleSubmitEvent}>
         <Form.Group className="mt-3">
-          <Form.Label for="user-username">
+          <Form.Label htmlFor="user-username">
             Entrer votre nom d'utilisateur
           </Form.Label>
           <Form.Control
@@ -67,7 +67,9 @@ const Register = () => {
           </Form.Text>
         </Form.Group>
         <Form.Group className="mt-3">
-          <Form.Label for="user-password">Entrer votre mot de passe</Form.Label>
+          <Form.Label htmlFor="user-password">
+            Entrer votre mot de passe
+          </Form.Label>
           <Form.Control
             type="password"
             id="user-password"
