@@ -10,7 +10,9 @@ from .serializers import AlbumsSerializer
 from .models import Albums
 from spotify.views import get_token
 
-# Create your views here.
+from django.shortcuts import get_object_or_404
+
+from .models import Albums
 
 
 @api_view(['GET'])
@@ -42,3 +44,11 @@ def get_album(request, id):
     print(album_data)
 
     return Response(album_data)
+
+@api_view(['GET'])
+def get_album_by_id(request, id):
+    album = get_object_or_404(Albums, id=id)
+
+    serializer = AlbumsSerializer(album, many=False)
+
+    return Response({"Album" : serializer.data})
