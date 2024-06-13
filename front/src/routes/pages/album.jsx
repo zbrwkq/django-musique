@@ -32,7 +32,7 @@ const Album = () => {
 
         fetchAlbum();
         fetchComments();
-    }, []);
+    }}, []);
 
     const handleAddComment = (newComment) => {
         setComments([newComment, ...comments, ])
