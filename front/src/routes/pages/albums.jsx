@@ -10,7 +10,7 @@ const Albums = () => {
     const [likedAlbums, setLikedAlbums] = useState([]);
     const [error, setError] = useState(null);
 
-    const auth = useAuth();
+    const auth = useAuth(); 
 
     useEffect(() => {
         const fetchAlbums = async () => {

@@ -3,6 +3,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from django.shortcuts import render
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from django.contrib.auth.models import User
 
 from .serializers import FollowsSerializer
 from .models import Follows
@@ -20,8 +24,8 @@ def get_follows(request):
 
 
 @api_view(['GET'])
-def get_follows_by_user(request, id_user):
-    follows = get_list_or_404(Follows, id_user=id_user)
+def get_follows_by_user(request, user_id):
+    follows = get_list_or_404(Follows, id_user=user_id)
 
     serializer = FollowsSerializer(follows, many=True)
 
@@ -43,3 +47,25 @@ def get_follow(request, id):
     serializer = FollowsSerializer(follows, many=False)
 
     return Response({"Follow" : serializer.data})
+
+@api_view(['POST'])
+def toggle_friend(request, user_id):
+    try:
+        current_user_id = request.user.id
+        if not current_user_id:
+            return Response({'message': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        friend_user_id = user_id
+
+        follow, created = Follows.objects.get_or_create(id_user=current_user_id, id_follow=friend_user_id)
+
+        if created:
+            message = 'Ami ajouté'
+        else:
+            follow.delete()
+            message = 'Ami supprimé'
+
+        return Response({'message': message}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
