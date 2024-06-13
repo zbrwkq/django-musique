@@ -25,6 +25,11 @@ a {
     z-index: -1;
 }
 
+#album-page .ratio,
+#preview-page .ratio {
+  font-size: 50px;
+}
+
 #preview-page h1,
 #preview-page h2 {
   font-weight: bold;

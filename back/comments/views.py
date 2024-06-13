@@ -121,8 +121,6 @@ def get_comments_by_album(request, id):
 
     serializer = CommentsSerializer(comments, many=True)
 
-    print(serializer.data)
-
     return Response(serializer.data)
 
 
@@ -159,8 +157,6 @@ def add_comment(request):
     - 201 Created: Retourne les détails du commentaire créé.
     """
     data = request.data
-
-    print(data)
 
     id_user = data.get('id_user')
     rating = data.get('rating')
