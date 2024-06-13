@@ -9,7 +9,9 @@ from django.shortcuts import render
 from .serializers import CommentsSerializer
 from .models import Comments
 
-from albums.views import get_album_by_id_spotify 
+from albums.views import get_album_by_id_spotify
+from artists.views import get_artist_by_id_spotify
+from tracks.views import get_track_by_id_spotify
 
 @api_view(['GET'])
 def get_comments(request):
@@ -48,7 +50,7 @@ def get_comments_by_user(request, id_user):
 
 
 @api_view(['GET'])
-def get_comments_by_track(request, id_track):
+def get_comments_by_track(request, id):
     """
     get:
     Retourne la liste des commentaires pour une piste spécifique.
@@ -60,15 +62,20 @@ def get_comments_by_track(request, id_track):
     - 200 OK: Retourne une liste des commentaires pour la piste.
     - 404 Not Found: Si aucun commentaire n'est trouvé pour cette piste.
     """
-    comments = Comments.objects.filter(id_track=id_track)
+    try:
+        id = int(id)
+    except ValueError:
+        id = get_track_by_id_spotify(id).get('id')  
+
+    comments = Comments.objects.filter(id_track=id)
 
     serializer = CommentsSerializer(comments, many=True)
 
-    return Response({"Comments" : serializer.data})
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
-def get_comments_by_artist(request, id_artist):
+def get_comments_by_artist(request, id):
     
     """
     get:
@@ -81,11 +88,16 @@ def get_comments_by_artist(request, id_artist):
     - 200 OK: Retourne une liste des commentaires pour l'artiste.
     - 404 Not Found: Si aucun commentaire n'est trouvé pour cet artiste.
     """
-    comments = Comments.objects.filter(id_artist=id_artist)
+    try:
+        id = int(id)
+    except ValueError:
+        id = get_artist_by_id_spotify(id).get('id')
+
+    comments = Comments.objects.filter(id_artist=id)
 
     serializer = CommentsSerializer(comments, many=True)
 
-    return Response({"Comments" : serializer.data})
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -107,7 +119,6 @@ def get_comments_by_album(request, id):
         id = get_album_by_id_spotify(id).get('id')
 
     comments = Comments.objects.filter(id_album=id)
-
 
     serializer = CommentsSerializer(comments, many=True)
 

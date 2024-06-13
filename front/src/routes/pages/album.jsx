@@ -98,7 +98,7 @@ const Album = () => {
             </div>
 
             <div className='container mt-5'>
-                <CommentForm albumId={id} onAdd={handleAddComment} />
+                <CommentForm artistId={id} onAdd={handleAddComment} />
             </div>
 
             <div className="container mt-5 mb-5">

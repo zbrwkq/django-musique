@@ -82,3 +82,11 @@ def get_track_by_id(request, id):
     serializer = TracksSerializer(track, many=False)
 
     return Response({"Track" : serializer.data})
+
+
+def get_track_by_id_spotify(id):
+    track = get_object_or_404(Tracks, spotify_id=id)
+
+    serializer = TracksSerializer(track, many=False)
+
+    return serializer.data
