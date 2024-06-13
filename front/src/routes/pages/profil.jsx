@@ -89,6 +89,7 @@ const Profil = () => {
                         <button onClick={() => toggleFriend(user.id)}>
                             Ajouter en ami
                         </button>
+                        <a href={`/friend/${user.id}`}>Voir le profil</a>
                     </li>
                 ))}
             </ul>
