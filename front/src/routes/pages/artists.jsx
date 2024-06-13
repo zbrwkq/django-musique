@@ -16,8 +16,6 @@ const Artists = () => {
   const [likes, setLikes] = useState([]);
 
   const auth = useAuth();
-  // FIXME: take real user id from local storage
-  // const userId = 1
 
   useEffect(() => {
     const fetchArtists = async () => {
@@ -40,7 +38,6 @@ const Artists = () => {
 
       const fetchArtistsLikes = async () => {
         try {
-          // Get all artists likes by user id
           const response = await axios.get(
             "http://127.0.0.1:8000/likes/user/artists/" + userId
           );
@@ -52,10 +49,14 @@ const Artists = () => {
           setLoading(false);
         }
       };
-
       fetchArtistsLikes();
     }
   }, [auth.token]);
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1);
+  };
 
   const handleLike = async (artistId) => {
     try {
@@ -74,11 +75,6 @@ const Artists = () => {
     } catch (err) {
       console.error(err.message);
     }
-  };
-
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-    setCurrentPage(1); // Reset pagination when searching
   };
 
   const filteredArtists = artists.filter((artist) =>

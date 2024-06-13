@@ -15,11 +15,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 @api_view(['GET'])
 def get_users(request):
-    users = User.objects.all()
-
-    serializer = UsersSerializer(users, many=True) 
-
-    return Response({"Users" : serializer.data})
+    current_user_id = request.user.id
+    users = User.objects.exclude(id=current_user_id)
+    
+    serializer = UsersSerializer(users, many=True)
+    return Response({"Users": serializer.data})
 
 
 @api_view(['GET'])
