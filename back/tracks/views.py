@@ -74,3 +74,11 @@ def get_tracks_preview(request, id):
     preview_data = response.json()
 
     return Response(preview_data)
+
+@api_view(['GET'])
+def get_track_by_id(request, id):
+    track = get_object_or_404(Tracks, id=id)
+
+    serializer = TracksSerializer(track, many=False)
+
+    return Response({"Track" : serializer.data})
