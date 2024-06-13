@@ -2,6 +2,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { useAuth } from "../hooks/AuthProvider";
 import NavLink from "react-bootstrap/esm/NavLink";
+import { Container } from "react-bootstrap";
 
 const Topbar = () => {
   const auth = useAuth();
@@ -22,17 +23,19 @@ const Topbar = () => {
   }
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
-      <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
+      <Container>
+        <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
 
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="me-auto">
-          {authButtons}
-          <NavLink href="/albums">Albums</NavLink>
-          <NavLink href="/artists">Artistes</NavLink>
-          <NavLink href="/tracks">Musiques</NavLink>
-        </Nav>
-      </Navbar.Collapse>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            {authButtons}
+            <NavLink href="/albums">Albums</NavLink>
+            <NavLink href="/artists">Artistes</NavLink>
+            <NavLink href="/tracks">Musiques</NavLink>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
     </Navbar>
   );
 };
