@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
 
 const Register = () => {
@@ -25,8 +25,10 @@ const Register = () => {
       if (result.success) {
         navigate("/");
       } else {
-        alert('Erreur lors de l\'inscription \rError message: ' + result.message);
-        return; 
+        alert(
+          "Erreur lors de l'inscription \rError message: " + result.message
+        );
+        return;
       }
     } else {
       alert(
@@ -80,9 +82,14 @@ const Register = () => {
             Le mot de passe doit contenir au moins 6 caractères
           </Form.Text>
         </Form.Group>
-        <Button type="submit" variant="primary" className="mt-4">
-          S'inscrire
-        </Button>
+        <div className="mt-3 d-flex flex-column align-items-center">
+          <Button type="submit" variant="primary" className="mx-auto">
+            S'inscrire
+          </Button>
+          <NavLink to="/login" className="mt-2">
+            Se connecter
+          </NavLink>
+        </div>
       </Form>
     </Container>
   );

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
 
 const Login = () => {
@@ -36,7 +36,6 @@ const Login = () => {
     alert("Veuillez saisir des informations correctes");
     return;
   };
-
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -85,9 +84,14 @@ const Login = () => {
             Le mot de passe doit contenir au moins 6 caractères
           </Form.Text>
         </Form.Group>
-        <Button type="submit" variant="primary" className="mt-4">
-          Se connecter
-        </Button>
+        <div className="mt-3 d-flex flex-column align-items-center">
+          <Button type="submit" variant="primary" className="mx-auto">
+            Se connecter
+          </Button>
+          <NavLink to="/register" className="mt-2">
+            S'inscrire
+          </NavLink>
+        </div>
       </Form>
     </Container>
   );

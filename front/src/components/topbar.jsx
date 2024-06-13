@@ -33,14 +33,14 @@ const Topbar = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
+        <Navbar.Brand href="/">TrackBoxd</Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link href="/albums">Albums</Nav.Link>
             <Nav.Link href="/artists">Artistes</Nav.Link>
-            <Nav.Link href="/tracks">Musiques</Nav.Link>
+            <Nav.Link href="/tracks">Titres</Nav.Link>
             {authButtons}
           </Nav>
         </Navbar.Collapse>
