@@ -12,9 +12,15 @@ from .models import Artists
 
 # Create your views here.
 
-
 @api_view(['GET'])
 def get_artists(request):
+    """
+    get:
+    Retourne la liste de tous les artistes.
+
+    Réponse:
+    - 200 OK: Retourne une liste des artistes.
+    """
     artists = Artists.objects.all()
 
     serializer = ArtistsSerializer(artists, many=True)
@@ -24,7 +30,17 @@ def get_artists(request):
 
 @api_view(['GET'])
 def get_artist(request, id):
+    """
+    get:
+    Retourne les détails d'un artiste spécifique en utilisant l'API de Spotify.
 
+    Paramètres:
+    - id (str): L'ID de l'artiste.
+
+    Réponse:
+    - 200 OK: Retourne les détails de l'artiste, y compris ses meilleurs morceaux et ses albums.
+    - 404 Not Found: Si l'artiste n'est pas trouvé.
+    """
     access_token = get_token()
 
 
