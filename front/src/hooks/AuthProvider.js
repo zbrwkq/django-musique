@@ -37,6 +37,7 @@ const AuthProvider = ({ children }) => {
       return { success: false, message: err.message };
     }
   };
+
   const registerAction = async (data) => {
     try {
       const response = await fetch("http://127.0.0.1:8000/users/register/", {
@@ -53,7 +54,7 @@ const AuthProvider = ({ children }) => {
 
       const res = await response.json();
       if (res.access) {
-        setToken(res.token);
+        setToken(res.access);
         localStorage.setItem("access", res.access);
         return { success: true };
       }
