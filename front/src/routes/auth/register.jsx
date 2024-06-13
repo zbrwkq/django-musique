@@ -11,7 +11,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const auth = useAuth();
-  const handleSubmitEvent = (e) => {
+  const handleSubmitEvent = async (e) => {
     e.preventDefault();
     if (
       input.username !== "" &&
@@ -21,10 +21,13 @@ const Register = () => {
       input.password.length < 6 &&
       input.password.length > 40
     ) {
-      if (auth.registerAction(input)) {
+      const result = await auth.registerAction(input);
+      if (result.success) {
         navigate("/");
+      } else {
+        alert('Erreur lors de l\'inscription \rError message: ' + result.message);
+        return; 
       }
-      return;
     }
     alert(
       "Une erreur est survenue lors de la création de votre compte, veuillez réessayer plus tard"
