@@ -54,3 +54,10 @@ def get_album_by_id_spotify(id):
 
     return serializer.data
 
+@api_view(['GET'])
+def get_album_by_id(request, id):
+    album = get_object_or_404(Albums, id=id)
+
+    serializer = AlbumsSerializer(album, many=False)
+
+    return Response({"Album" : serializer.data})
