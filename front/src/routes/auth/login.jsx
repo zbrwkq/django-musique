@@ -22,6 +22,7 @@ const Login = () => {
       input.password.length >= 6 &&
       input.password.length <= 40
     ) {
+      console.log(input)
       const result = await auth.loginAction(input);
       if (result.success) {
         navigate("/");
