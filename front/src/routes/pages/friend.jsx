@@ -22,17 +22,35 @@ const Friend = () => {
     const fetchAlbums = async () => {
         try {
             const response = await axios.get(`http://127.0.0.1:8000/likes/user/albums/${friendId}`);
-            setAlbums(response.data.albums || []);
+            const albumsIds = response.data.liked_albums;
+  
+            const albumsData = [];
+            const albumPromises = albumsIds.map(async (albumId) => {
+                const albumResponse = await axios.get(`http://127.0.0.1:8000/albums/get/${albumId}`);
+                albumsData.push(albumResponse.data.Album);
+            });
+    
+            await Promise.all(albumPromises);
+            setAlbums(albumsData);
         } catch (err) {
             setError(err.message);
         }
     }
+    
 
     const fetchArtists = async () => {
         try {
             const response = await axios.get(`http://127.0.0.1:8000/likes/user/artists/${friendId}`);
-            setArtists(response.data.artists || []);
-            console.log(artists)
+            const artistsIds = response.data.liked_artists;
+
+            const artistsData = [];
+            const artistPromises = artistsIds.map(async (artistId) => {
+                const artistResponse = await axios.get(`http://127.0.0.1:8000/artists/get/${artistId}`);
+                artistsData.push(artistResponse.data.Artist);
+            });
+
+            await Promise.all(artistPromises);
+            setArtists(artistsData);
         } catch (err) {
             setError(err.message);
         }
@@ -41,7 +59,16 @@ const Friend = () => {
     const fetchTracks = async () => {
         try {
             const response = await axios.get(`http://127.0.0.1:8000/likes/user/tracks/${friendId}`);
-            setTracks(response.data.tracks || []);
+            const tracksIds = response.data.liked_tracks;
+
+            const tracksData = [];
+            const trackPromises = tracksIds.map(async (trackId) => {
+                const trackResponse = await axios.get(`http://127.0.0.1:8000/tracks/get/${trackId}`);
+                tracksData.push(trackResponse.data.Track);
+            });
+
+            await Promise.all(trackPromises);
+            setTracks(tracksData);
         } catch (err) {
             setError(err.message);
         }
@@ -49,7 +76,7 @@ const Friend = () => {
 
     const fetchUser = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/users/${friendId}`);
+            const response = await axios.get(`http://127.0.0.1:8000/users/get/${friendId}`);
             setUser(response.data.User || []);
         } catch (err) {
             setError("L'utilisateur n'existe pas !");
