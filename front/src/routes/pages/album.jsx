@@ -45,14 +45,13 @@ const Album = () => {
     setComments(comments.filter((comment) => comment.id !== deletedCommentId));
   };
 
-  // if (error) {
-  //   return <div>{error}</div>;
-  // }
-
   if (!album) {
     return <div>Loading...</div>;
   }
 
+   if (error) {
+     return <div>{error}</div>;
+   }
   return (
     <div id="album-page" className="w-100 pt-5">
       <div className="background"></div>
@@ -89,15 +88,6 @@ const Album = () => {
                 </li>
               ))}
             </ul>
-          </div>
-
-          <div className="col-md-3 album-details mt-5">
-            <h2>Release Date :</h2>
-            <p>{album.release_date}</p>
-            <h2>Label :</h2>
-            <p>{album.label}</p>
-            <h2>Genres :</h2>
-            <p>{album.genres.join(", ")}</p>
           </div>
         </div>
       </div>
