@@ -37,7 +37,6 @@ def get_artist(request, id):
     Paramètres:
     - id (str): L'ID de l'artiste.
 
-<<<<<<< HEAD
     Réponse:
     - 200 OK: Retourne les détails de l'artiste, y compris ses meilleurs morceaux et ses albums.
     - 404 Not Found: Si l'artiste n'est pas trouvé.
@@ -82,8 +81,6 @@ def get_artist(request, id):
     artist_data['albums'] = albums_data
 
     return Response(artist_data)
-=======
-    return Response({"Artist" : serializer.data})
 
 
 @api_view(['GET'])
@@ -93,4 +90,3 @@ def get_artist_by_id(request, id):
     serializer = ArtistsSerializer(artist, many=False)
 
     return Response({"Artist" : serializer.data})
->>>>>>> 44d0fc0 (finish functionnality)

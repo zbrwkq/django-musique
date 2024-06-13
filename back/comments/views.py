@@ -136,7 +136,7 @@ def get_comment(request, id):
 @require_http_methods(["GET", "POST"])
 @api_view(['POST'])
 def add_comment(request):
-      """
+    """
     post:
     Ajoute un nouveau commentaire.
 
