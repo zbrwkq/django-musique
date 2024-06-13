@@ -44,6 +44,7 @@ const Topbar = () => {
             {authButtons}
           </Nav>
         </Navbar.Collapse>
+      </Container>
     </Navbar>
   );
 };
