@@ -15,6 +15,7 @@ import Profil from "./routes/pages/profil";
 import Home from "./routes/pages/home/home";
 import Artist from "./routes/pages/artist";
 import Friend from "./routes/pages/friend";
+import Track from "./routes/pages/track";
 
 const router = createBrowserRouter([
   {
@@ -50,13 +51,17 @@ const router = createBrowserRouter([
     element: <Tracks />,
   },
   {
+    path: "/track/:id",
+    element: <Track />,
+  },
+  {
     path: "/profil",
     element: <Profil />,
   },
   {
     path: "/friend/:friendId",
-    element: <Friend />
-  }
+    element: <Friend />,
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
