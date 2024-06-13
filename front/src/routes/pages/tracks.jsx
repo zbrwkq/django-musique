@@ -6,6 +6,7 @@ import { useAuth } from "../../hooks/AuthProvider";
 import { jwtDecode } from "jwt-decode";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import { NavLink } from "react-router-dom";
 
 const Tracks = () => {
   const [tracks, setTracks] = useState([]);
@@ -114,6 +115,7 @@ const Tracks = () => {
           <FontAwesomeIcon icon={faSearch} />
         </InputGroup.Text>
       </InputGroup>
+
       <table className="table">
         <thead>
           <tr>
@@ -124,7 +126,12 @@ const Tracks = () => {
         <tbody>
           {tracks.map((track) => (
             <tr key={track.spotify_id}>
-              <td>{track.name}</td>
+              <td>
+                {" "}
+                <NavLink to={`/track/${track.spotify_id}`}>
+                  {track.name}
+                </NavLink>
+              </td>
               <td>
                 {auth.token && (
                   <FontAwesomeIcon
