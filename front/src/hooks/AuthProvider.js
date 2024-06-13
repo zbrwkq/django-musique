@@ -27,11 +27,12 @@ const AuthProvider = ({ children }) => {
       if (res.access) {
         setToken(res.access);
         localStorage.setItem("access", res.access);
-        return;
+        return true;
       }
       throw new Error(res.message);
     } catch (err) {
       console.error(err);
+      return false;
     }
   };
   const registerAction = async (data) => {
@@ -50,17 +51,18 @@ const AuthProvider = ({ children }) => {
       if (res.access) {
         setToken(res.token);
         localStorage.setItem("site", res.access);
-        return;
+        return true;
       }
       throw new Error(res.message);
     } catch (err) {
       console.error(err);
+      return false;
     }
   };
 
   const logOut = () => {
     setToken("");
-    localStorage.removeItem("site");
+    localStorage.removeItem("acess");
   };
 
   return (
