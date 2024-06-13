@@ -20,6 +20,7 @@ const Album = () => {
       } catch (err) {
         setError("Failed to fetch album details");
       }
+    }
 
         const fetchComments = async () => {
             try {
@@ -32,7 +33,7 @@ const Album = () => {
 
         fetchAlbum();
         fetchComments();
-    }}, []);
+    }, []);
 
     const handleAddComment = (newComment) => {
         setComments([newComment, ...comments, ])
