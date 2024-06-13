@@ -1,10 +1,9 @@
-from django.shortcuts import get_object_or_404, get_list_or_404
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
 from django.views.decorators.http import require_http_methods
-from django.shortcuts import render
 
 from .serializers import CommentsSerializer
 from .models import Comments
@@ -122,6 +121,8 @@ def get_comments_by_album(request, id):
 
     serializer = CommentsSerializer(comments, many=True)
 
+    print(serializer.data)
+
     return Response(serializer.data)
 
 
@@ -168,8 +169,8 @@ def add_comment(request):
     id_artist = get_artist_by_id_spotify(data.get('id_artist')).get('id') if data.get('id_artist') else 0
     id_track = get_track_by_id_spotify(data.get('id_track')).get('id') if data.get('id_track') else 0
 
-    if rating is None or id_album + id_album + id_album > 0:
-        return Response({"error": "Rating and album ID are required."}, status=status.HTTP_400_BAD_REQUEST)
+    if rating is None or id_album + id_artist + id_track == 0:
+        return Response({"error": "Element are missing"}, status=status.HTTP_400_BAD_REQUEST)
 
     new_comment = Comments(
         id_user=id_user,

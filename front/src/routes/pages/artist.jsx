@@ -18,7 +18,6 @@ const Artist = ({ artistId }) => {
           `http://127.0.0.1:8000/artists/${id}/`
         );
         setArtist(response.data);
-        console.log(response.data);
       } catch (err) {
         setError("Failed to fetch artist details");
       }
@@ -28,7 +27,6 @@ const Artist = ({ artistId }) => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/comments/artist/${id}/`);
         setComments(response.data.reverse());
-        console.log(response.data);
       } catch (error) {
         setError(error);
       }

@@ -16,7 +16,6 @@ const Album = () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/albums/${id}/`);
         setAlbum(response.data);
-        console.log(response.data);
       } catch (err) {
         setError("Failed to fetch album details");
       }
@@ -29,7 +28,6 @@ const Album = () => {
         );
         setComments(response.data.reverse());
       } catch (error) {
-        console.log(error);
         setError(error);
       }
     };
