@@ -39,4 +39,4 @@ def get_album(request, id):
 
     print(album_data)
 
-    return Response({"album" : album_data})
+    return Response(album_data)
