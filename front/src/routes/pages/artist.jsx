@@ -77,7 +77,13 @@ const Artist = ({ artistId }) => {
         <h2>Derniers albums</h2>
         <div className="w-100 d-flex flex-wrap justify-content-between">
           {artist.albums.items.map((album) => (
-            <NavLink to={`/album/${album.id}`} key={album.id}>
+            <NavLink
+              to={`/album/${album.id}`}
+              key={album.id}
+              style={{
+                width: "300px",
+              }}
+            >
               <img src={album.images[0].url} alt="" width={300} height={300} />
               <p id="album_name">{album.name}</p>
               <p id="album_artist">{album.artist}</p>
