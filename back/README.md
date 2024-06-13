@@ -12,4 +12,8 @@ pip install django-cors-headers
 
 pip install djangorestframework-simplejwt
 
+pip install packaging
+
+pip install drf-yasg
+
 python manage.py runserver

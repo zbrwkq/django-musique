@@ -31,7 +31,7 @@ def get_tracks(request):
 def get_track(request, id):
     """
     get:
-    Retourne les détails d'un track spécifique.
+    Retourne les détails d'un track spécifique en utilisant l'API de Spotify..
 
     Paramètres:
     - id (int): L'ID du track.
@@ -40,11 +40,19 @@ def get_track(request, id):
     - 200 OK: Retourne les détails du track.
     - 404 Not Found: Si le track n'est pas trouvé.
     """
-    tracks = get_object_or_404(Tracks, id=id)
+    access_token = get_token()
+    track_url = f'https://api.spotify.com/v1/tracks/{id}'
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
 
-    serializer = TracksSerializer(tracks, many=False)
+    response = requests.get(track_url, headers=headers)
+    if response.status_code != 200:
+        return render(request, 'error.html', {'message': 'Failed to fetch track details'})
 
-    return Response({"Track" : serializer.data})
+    track_data = response.json()
+
+    return Response(track_data)
 
 @api_view(['GET'])
 def get_tracks_preview(request, id):
