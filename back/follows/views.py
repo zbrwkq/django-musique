@@ -24,8 +24,8 @@ def get_follows(request):
 
 
 @api_view(['GET'])
-def get_follows_by_user(request, id_user):
-    follows = get_list_or_404(Follows, id_user=id_user)
+def get_follows_by_user(request, user_id):
+    follows = get_list_or_404(Follows, id_user=user_id)
 
     serializer = FollowsSerializer(follows, many=True)
 
