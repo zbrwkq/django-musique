@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../../hooks/AuthProvider";
 import { jwtDecode } from "jwt-decode";
 
-const Profil = () => {
+const Profil = () => {    
     const [users, setUsers] = useState([]);
     const [friends, setFriends] = useState({});
     const [error, setError] = useState(null);
@@ -64,6 +64,8 @@ const Profil = () => {
     const friendsIds = Object.keys(friends);
     const friendsList = users.filter(user => friendsIds.includes(user.id.toString()));
     const otherUsersList = users.filter(user => !friendsIds.includes(user.id.toString()));
+
+    if(!auth.token) return <h1>Unauthorized</h1>;
 
     return (
         <div className="container">
