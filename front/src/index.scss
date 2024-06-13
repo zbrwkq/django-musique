@@ -1,8 +1,8 @@
 @import "~bootstrap/scss/bootstrap";
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 
 $spotify-black: #191414;
-$spotify-green: #1DB954;
+$spotify-green: #1db954;
 
 a {
     text-decoration: none;
@@ -23,15 +23,15 @@ a {
     z-index: -1;
 }
 
-#album-page h1,
-#album-page h2 {
-  font-weight: bold; 
+#preview-page h1,
+#preview-page h2 {
+  font-weight: bold;
 }
 
-#album-page img {
-    width: '500px';
-    height: '500px';
-    box-shadow: '0px 0px 15px rgba(0, 0, 0, 0.3)';
+#preview-page img {
+  width: "500px";
+  height: "500px";
+  box-shadow: "0px 0px 15px rgba(0, 0, 0, 0.3)";
 }
 
 #album-page .input-inverse {
@@ -43,3 +43,10 @@ a {
 #album-page .my-btn-suppr {
     float: right;
 }
+
+#preview-page .input-inverse {
+  background-color: $spotify-black;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+

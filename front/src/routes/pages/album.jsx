@@ -58,10 +58,10 @@ const Album = () => {
                     <h1>{album.name}</h1>
                     <h3>
                         {album.artists.map((artist, index) => (
-                            <p key={artist.id}>
-                                {artist.name}
-                                {index < album.artists.length - 1 ? ',' : ''}
-                            </p>
+                          <NavLink to={`/artist/${artist.id}`} key={artist.id}>
+                            {artist.name}
+                            {index < album.artists.length - 1 ? "," : ""}
+                          </NavLink>
                         ))}
                     </h3>
                 </div>
@@ -113,7 +113,6 @@ const Album = () => {
             </div>
             <br />
         </div>
-
     );
 };
 

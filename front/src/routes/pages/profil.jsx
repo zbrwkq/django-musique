@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../../hooks/AuthProvider";
 import { jwtDecode } from "jwt-decode";
 
-const Profil = () => {
+const Profil = () => {    
     const [users, setUsers] = useState([]);
     const [friends, setFriends] = useState({});
     const [error, setError] = useState(null);
@@ -65,33 +65,61 @@ const Profil = () => {
     const friendsList = users.filter(user => friendsIds.includes(user.id.toString()));
     const otherUsersList = users.filter(user => !friendsIds.includes(user.id.toString()));
 
+    if(!auth.token) return <h1>Unauthorized</h1>;
+
     return (
-        <div>
+        <div className="container">
             <h1>Profil</h1>
             <h2>Mes amis</h2>
-            <ul>
-                {friendsList.map(user => (
-                    <li key={user.id}>
-                        <a href={`/details/${user.id}`}>
-                            {user.username} - {user.id}
-                        </a>
-                        <button onClick={() => toggleFriend(user.id)}>
-                            Supprimer des amis
-                        </button>
-                    </li>
-                ))}
-            </ul>
+            <table className="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nom d'utilisateur</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {friendsList.map(user => (
+                        <tr key={user.id}>
+                            <td>
+                                <a href={`/details/${user.id}`}>
+                                    {user.username}
+                                </a>
+                            </td>
+                            <td>
+                                <button 
+                                    className="btn btn-danger" 
+                                    onClick={() => toggleFriend(user.id)}>
+                                    Supprimer des amis
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
             <h2>Autres utilisateurs</h2>
-            <ul>
-                {otherUsersList.map(user => (
-                    <li key={user.id}>
-                        {user.username} - {user.id}
-                        <button onClick={() => toggleFriend(user.id)}>
-                            Ajouter en ami
-                        </button>
-                    </li>
-                ))}
-            </ul>
+            <table className="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nom d'utilisateur</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {otherUsersList.map(user => (
+                        <tr key={user.id}>
+                            <td>{user.username}</td>
+                            <td>
+                                <button 
+                                    className="btn btn-primary" 
+                                    onClick={() => toggleFriend(user.id)}>
+                                    Ajouter en ami
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };

@@ -13,6 +13,7 @@ import Artists from "./routes/pages/artists";
 import Tracks from "./routes/pages/tracks";
 import Profil from "./routes/pages/profil";
 import Home from "./routes/pages/home/home";
+import Artist from "./routes/pages/artist";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: "/artists",
     element: <Artists />,
+  },
+  {
+    path: "/artist/:id",
+    element: <Artist />,
   },
   {
     path: "/tracks",

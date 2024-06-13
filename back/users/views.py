@@ -15,15 +15,33 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 @api_view(['GET'])
 def get_users(request):
-    users = User.objects.all()
+    """
+    get:
+    Retourne la liste de tous les utilisateurs, à l'exclusion de l'utilisateur courant.
 
-    serializer = UsersSerializer(users, many=True) 
-
-    return Response({"Users" : serializer.data})
+    Réponse:
+    - 200 OK: Retourne une liste des utilisateurs.
+    """
+    current_user_id = request.user.id
+    users = User.objects.exclude(id=current_user_id)
+    
+    serializer = UsersSerializer(users, many=True)
+    return Response({"Users": serializer.data})
 
 
 @api_view(['GET'])
 def get_user(request, id):
+    """
+    get:
+    Retourne les détails d'un utilisateur spécifique.
+
+    Paramètres:
+    - id (int): L'ID de l'utilisateur.
+
+    Réponse:
+    - 200 OK: Retourne les détails de l'utilisateur.
+    - 404 Not Found: Si l'utilisateur n'est pas trouvé.
+    """
     users = get_object_or_404(User, id=id)
 
     serializer = UsersSerializer(users, many=False)
@@ -33,6 +51,14 @@ def get_user(request, id):
 
 @api_view(['POST'])
 def register(request):
+    """
+    post:
+    Enregistre un nouvel utilisateur et retourne les jetons JWT.
+
+    Réponse:
+    - 201 Created: Utilisateur créé avec succès et retourne les jetons.
+    - 400 Bad Request: Erreurs de validation.
+    """
     if request.method == 'POST':
         serializer = UsersSerializer(data=request.data)
         if serializer.is_valid():
