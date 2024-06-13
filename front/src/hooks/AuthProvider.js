@@ -23,7 +23,7 @@ const AuthProvider = ({ children }) => {
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error(response.text);
       }
       const res = await response.json();
       if (res.access) {
@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
       throw new Error(res.message);
     } catch (err) {
       console.error(err);
-      return { success: false, message: err.message };
+      return { success: false, message: err };
     }
   };
 

@@ -1,12 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
+import CommentForm from '../../components/CommentForm';
+import Comment from '../../components/Comment';
 
 const Artist = ({ artistId }) => {
   const [artist, setArtist] = useState(null);
+  const [comments, setComments] = useState([]);
   const [error, setError] = useState(null);
 
   const { id } = useParams();
+
   useEffect(() => {
     const fetchartist = async () => {
       try {
@@ -20,8 +24,27 @@ const Artist = ({ artistId }) => {
       }
     };
 
+    const fetchComments = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/comments/artist/${id}/`);
+        setComments(response.data.reverse());
+        console.log(response.data);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
     fetchartist();
+    fetchComments();
   }, [artistId]);
+
+  const handleAddComment = (newComment) => {
+    setComments([newComment, ...comments,])
+  };
+
+  const handleDeleteComment = (deletedCommentId) => {
+    setComments(comments.filter(comment => comment.id !== deletedCommentId));
+  };
 
   if (error) {
     return <div>{error}</div>;
@@ -34,12 +57,8 @@ const Artist = ({ artistId }) => {
     <div
       id="preview-page"
       className="w-100 pt-5"
-      style={{
-        height: "100vh",
-        backgroundColor: "#1a1a1a",
-        color: "#ffffff",
-      }}
     >
+      <div className='background'></div>
       <div className="artist-container container text-white mt-5">
         <div className="text-center">
           <h1>{artist.name}</h1>
@@ -72,6 +91,22 @@ const Artist = ({ artistId }) => {
           </div>
         </div>
       </div>
+
+      <div className='container mt-5'>
+        <CommentForm artistId={id} onAdd={handleAddComment} />
+      </div>
+
+      <div className="container mt-5 mb-5">
+        <h2>Commentaires</h2>
+        {comments.length > 0 ? (
+          comments.map((comment) => (
+            <Comment key={comment.id} comment={comment} onDelete={handleDeleteComment} />
+          ))
+        ) : (
+          <p>Pas de commentaire, soyez le premier à noter cet album !</p>
+        )}
+      </div>
+      <br />
 
       <div className="container mt-5">
         <h2>Derniers albums</h2>
