@@ -48,11 +48,41 @@ def get_album(request, id):
     return Response(album_data)
 
 def get_album_by_id_spotify(id):
-    album = get_object_or_404(Albums, id_album=id)
+    album = Albums.objects.filter(id_album=id).first()
+
+    print(id)
+
+    if not album :
+
+        access_token = get_token()
+        album_url = f'https://api.spotify.com/v1/albums/{str(id)}'
+        headers = {
+            'Authorization': f'Bearer {access_token}'
+        }
+
+        response = requests.get(album_url, headers=headers)
+
+        album_data = response.json()
+        
+        album = Albums(
+            id=int(get_last_id())+1,
+            id_album=id,
+            name=album_data.get('name', None),
+            photo_url=album_data.get('images', [])[0].get('url', None),
+            artist=album_data.get('artists', [])[0].get('name', None),
+            id_artist=album_data.get('artists', [])[0].get('id', None),
+        )
+
+        album.save()
 
     serializer = AlbumsSerializer(album, many=False)
 
     return serializer.data
+
+def get_last_id():
+    albums = Albums.objects.all()
+    last_album = albums.order_by('-id').first()
+    return last_album.id
 
 @api_view(['GET'])
 def get_album_by_id(request, id):

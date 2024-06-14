@@ -129,7 +129,7 @@ const Track = ({ trackId }) => {
       </div>
 
       <div className="container mt-5 text-center w-50 ratio pt-5">
-          <p><HeartFill color="pink" size={50} /> : <span>{likes.length}</span>     <StarFill color="gold" size={50} /> : <span>{averageRating.toFixed(1)}</span></p>  
+          <p><HeartFill color="pink" size={50} /> : <span>{likes ? likes.length : 0}</span>     <StarFill color="gold" size={50} /> : <span>{averageRating ? averageRating.toFixed(1) : 0}</span></p>  
       </div>
 
       <div className="container mt-5">
