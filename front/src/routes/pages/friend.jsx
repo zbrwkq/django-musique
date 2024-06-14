@@ -4,6 +4,9 @@ import jwtDecode from "jwt-decode"; // Corrigé l'import de jwt-decode
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Button, Row, Col, Container } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 const Friend = () => {
     const auth = useAuth();
@@ -17,6 +20,8 @@ const Friend = () => {
     
     const [user, setUser] = useState()
     const [searchFilter, setSearchFilter] = useState('Albums');
+
+    let tracksIds = [];
 
     // Fonctions de récupération des données
     const fetchAlbums = async () => {
@@ -60,12 +65,15 @@ const Friend = () => {
         try {
             const response = await axios.get(`http://127.0.0.1:8000/likes/user/tracks/${friendId}`);
             const tracksIds = response.data.liked_tracks;
+            console.log(tracksIds)
 
             const tracksData = [];
             const trackPromises = tracksIds.map(async (trackId) => {
                 const trackResponse = await axios.get(`http://127.0.0.1:8000/tracks/get/${trackId}`);
                 tracksData.push(trackResponse.data.Track);
             });
+
+            console.log(tracksData)
 
             await Promise.all(trackPromises);
             setTracks(tracksData);
@@ -94,6 +102,7 @@ const Friend = () => {
 
     // Au click sur un bouton on charge les autres données (Artistes, Musiques, Albums)
     useEffect(() => {
+        setError(null);
         switch (searchFilter) {
             case 'Artistes':
                 fetchArtists();
@@ -130,11 +139,40 @@ const Friend = () => {
         if (!tracks.length) {
             return <p>Cet utilisateur n'a pas encore liké de musique</p>;
         }
-        return tracks.map((track) => (
-            <tr key={track.id}>
-                <td>{track.name}</td>
+
+        return (
+            <table className="table">
+            <thead>
+            <tr>
+                <th scope="col">Nom de la piste</th>
+                <th scope="col">Like</th>
             </tr>
-        ));
+            </thead>
+            <tbody>
+            {tracks.map((track) => (
+                <tr key={track.spotify_id}>
+                <td>
+                    {" "}
+                    <NavLink to={`/track/${track.spotify_id}`}>
+                    {track.name}
+                    </NavLink>
+                </td>
+                <td>
+                    {auth.token && (
+                    <FontAwesomeIcon
+                        icon={faHeart}
+                        style={{
+                        color: "red",
+                        cursor: "pointer",
+                        }}
+                    />
+                    )}
+                </td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
+        )
     }
 
     const renderArtistContent = () => {
