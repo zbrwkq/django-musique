@@ -1,7 +1,7 @@
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { useAuth } from "../hooks/AuthProvider";
-import { Container } from "react-bootstrap";
+import { Container, NavLink } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 const Topbar = () => {
@@ -38,6 +38,7 @@ const Topbar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
+            <Nav.Link href="/profil">Profil</Nav.Link>
             <Nav.Link href="/albums">Albums</Nav.Link>
             <Nav.Link href="/artists">Artistes</Nav.Link>
             <Nav.Link href="/tracks">Titres</Nav.Link>
