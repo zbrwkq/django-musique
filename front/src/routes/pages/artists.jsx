@@ -5,8 +5,7 @@ import { faHeart, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../hooks/AuthProvider";
 import { jwtDecode } from "jwt-decode";
 import { NavLink } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
+import SearchBar from "../../components/searchBar";
 
 const Artists = () => {
   const [artists, setArtists] = useState([]);
@@ -106,17 +105,7 @@ const Artists = () => {
 
   return (
     <div className="w-100 container">
-      <InputGroup className="my-3">
-        <Form.Control
-          type="text"
-          placeholder="Rechercher..."
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-        <InputGroup.Text>
-          <FontAwesomeIcon icon={faSearch} />
-        </InputGroup.Text>
-      </InputGroup>
+      <SearchBar searchTerm={searchTerm} handleSearch={handleSearch} />
       <ul className="w-100 d-flex flex-wrap justify-content-between">
         {currentArtists.map((artist) => (
           <li

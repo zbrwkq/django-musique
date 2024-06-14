@@ -5,6 +5,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../hooks/AuthProvider";
 import { jwtDecode } from "jwt-decode";
 import { NavLink } from "react-router-dom";
+import SearchBar from "../../components/searchBar";
 
 const Albums = () => {
   const [albums, setAlbums] = useState([]);
@@ -74,9 +75,10 @@ const Albums = () => {
   const indexOfLastAlbum = currentPage * albumsPerPage;
   const indexOfFirstAlbum = indexOfLastAlbum - albumsPerPage;
   const currentAlbums = albums
-    .filter(album => 
-      album.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      album.artist.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter(
+      (album) =>
+        album.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        album.artist.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .slice(indexOfFirstAlbum, indexOfLastAlbum);
 
@@ -92,17 +94,13 @@ const Albums = () => {
     }
   };
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1);
+  };
   return (
     <div className="w-100 container">
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Rechercher un album ou un artiste..."
-          onChange={(e) => setSearchTerm(e.target.value)}
-          value={searchTerm}
-          className="form-control"
-        />
-      </div>
+      <SearchBar searchTerm={searchTerm} handleSearch={handleSearch} />
       <ul className="w-100 d-flex flex-wrap justify-content-between">
         {currentAlbums.map((album) => (
           <li

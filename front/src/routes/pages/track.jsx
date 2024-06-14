@@ -27,11 +27,13 @@ const Track = ({ trackId }) => {
 
     const fetchLikes = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/likes/track/${id}/`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/likes/track/${id}/`
+        );
         setLikes(response.data);
         console.log(response.data);
       } catch (error) {
-        console.error('Error fetching likes:', error);
+        console.error("Error fetching likes:", error);
       }
     };
 
@@ -48,11 +50,14 @@ const Track = ({ trackId }) => {
         const fetchedComments = response.data.reverse();
         setComments(fetchedComments);
 
-        const totalRating = fetchedComments.reduce((sum, comment) => sum + comment.rating, 0);
-        const averageRating = fetchedComments.length > 0 ? totalRating / fetchedComments.length : 0;
+        const totalRating = fetchedComments.reduce(
+          (sum, comment) => sum + comment.rating,
+          0
+        );
+        const averageRating =
+          fetchedComments.length > 0 ? totalRating / fetchedComments.length : 0;
         setAverageRating(averageRating);
         setAddComments(false);
-
       } catch (error) {
         setError(error);
       }
@@ -70,7 +75,7 @@ const Track = ({ trackId }) => {
   };
 
   if (error) {
-    return <div>{error}</div>;
+    console.log(error);
   }
 
   if (!track) {
@@ -116,20 +121,25 @@ const Track = ({ trackId }) => {
             <h2>Release Date :</h2>
             <p>{track.album.release_date}</p>
           </div>
-            {track.preview_url && (
-              <div className="col-md-3 album-details mt-5">
-                  <h2>Preview :</h2>
-                  <audio controls>
-                    <source src={track.preview_url} type="audio/mpeg" />
-                    Votre navigateur ne supporte pas l'élément audio.
-                  </audio>
-              </div>
-            )}
+          {track.preview_url && (
+            <div className="col-md-3 album-details mt-5">
+              <h2>Preview :</h2>
+              <audio controls>
+                <source src={track.preview_url} type="audio/mpeg" />
+                Votre navigateur ne supporte pas l'élément audio.
+              </audio>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="container mt-5 text-center w-50 ratio pt-5">
-          <p><HeartFill color="pink" size={50} /> : <span>{likes ? likes.length : 0}</span>     <StarFill color="gold" size={50} /> : <span>{averageRating ? averageRating.toFixed(1) : 0}</span></p>  
+        <p>
+          <HeartFill color="pink" size={50} /> :{" "}
+          <span>{likes ? likes.length : 0}</span>{" "}
+          <StarFill color="gold" size={50} /> :{" "}
+          <span>{averageRating ? averageRating.toFixed(1) : 0}</span>
+        </p>
       </div>
 
       <div className="container mt-5">
