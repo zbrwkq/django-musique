@@ -3,11 +3,15 @@ import axios from "axios";
 import { useParams, NavLink } from "react-router-dom";
 import CommentForm from "../../components/CommentForm";
 import Comment from "../../components/Comment";
+import { StarFill, HeartFill } from "react-bootstrap-icons";
 
 const Album = () => {
   const [album, setAlbum] = useState(null);
   const [comments, setComments] = useState([]);
+  const [addComments, setAddComments] = useState(false);
   const [error, setError] = useState(null);
+  const [likes, setLikes] = useState(0);
+  const [averageRating, setAverageRating] = useState(null);
 
   const { id } = useParams();
 
@@ -16,29 +20,49 @@ const Album = () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/albums/${id}/`);
         setAlbum(response.data);
-        console.log(response.data);
       } catch (err) {
         setError("Failed to fetch album details");
       }
     };
 
+    const fetchLikes = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/likes/album/${id}/`);
+        setLikes(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching likes:', error);
+      }
+    };
+
+    fetchAlbum();
+    fetchLikes();
+  }, []);
+
+  useEffect(() => {
     const fetchComments = async () => {
       try {
         const response = await axios.get(
           `http://127.0.0.1:8000/comments/album/${id}/`
         );
-        setComments(response.data.reverse());
+        const fetchedComments = response.data.reverse();
+        setComments(fetchedComments);
+
+        const totalRating = fetchedComments.reduce((sum, comment) => sum + comment.rating, 0);
+        const averageRating = fetchedComments.length > 0 ? totalRating / fetchedComments.length : 0;
+        setAverageRating(averageRating);
+        setAddComments(false);
+
       } catch (error) {
-        console.log(error);
         setError(error);
       }
     };
-    fetchAlbum();
+
     fetchComments();
-  }, []);
+  }, [addComments]);
 
   const handleAddComment = (newComment) => {
-    setComments([newComment, ...comments]);
+    setAddComments(true);
   };
 
   const handleDeleteComment = (deletedCommentId) => {
@@ -49,9 +73,9 @@ const Album = () => {
     return <div>Loading...</div>;
   }
 
-   if (error) {
-     return <div>{error}</div>;
-   }
+  if (error) {
+    return <div>{error}</div>;
+  }
   return (
     <div id="album-page" className="w-100 pt-5">
       <div className="background"></div>
@@ -90,6 +114,10 @@ const Album = () => {
             </ul>
           </div>
         </div>
+      </div>
+
+      <div className="container mt-5 text-center w-50 ratio pt-5">
+          <p><HeartFill color="pink" size={50} /> : <span>{likes.length}</span>     <StarFill color="gold" size={50} /> : <span>{averageRating.toFixed(1)}</span></p>  
       </div>
 
       <div className="container mt-5">

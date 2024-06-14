@@ -3,16 +3,20 @@ import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import CommentForm from "../../components/CommentForm";
 import Comment from "../../components/Comment";
+import { StarFill, HeartFill } from "react-bootstrap-icons";
 
 const Track = ({ trackId }) => {
   const [track, setTrack] = useState(null);
   const [comments, setComments] = useState([]);
+  const [addComments, setAddComments] = useState(false);
   const [error, setError] = useState(null);
+  const [likes, setLikes] = useState(0);
+  const [averageRating, setAverageRating] = useState(null);
 
   const { id } = useParams();
 
   useEffect(() => {
-    const fetchtrack = async () => {
+    const fetchTrack = async () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/tracks/${id}/`);
         setTrack(response.data);
@@ -21,24 +25,44 @@ const Track = ({ trackId }) => {
       }
     };
 
+    const fetchLikes = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/likes/track/${id}/`);
+        setLikes(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching likes:', error);
+      }
+    };
+
+    fetchTrack();
+    fetchLikes();
+  }, [trackId]);
+
+  useEffect(() => {
     const fetchComments = async () => {
       try {
         const response = await axios.get(
           `http://127.0.0.1:8000/comments/track/${id}/`
         );
-        setComments(response.data.reverse());
-        console.log(response.data);
+        const fetchedComments = response.data.reverse();
+        setComments(fetchedComments);
+
+        const totalRating = fetchedComments.reduce((sum, comment) => sum + comment.rating, 0);
+        const averageRating = fetchedComments.length > 0 ? totalRating / fetchedComments.length : 0;
+        setAverageRating(averageRating);
+        setAddComments(false);
+
       } catch (error) {
         setError(error);
       }
     };
 
-    fetchtrack();
     fetchComments();
-  }, [trackId]);
+  }, [addComments]);
 
   const handleAddComment = (newComment) => {
-    setComments([newComment, ...comments]);
+    setAddComments(true);
   };
 
   const handleDeleteComment = (deletedCommentId) => {
@@ -93,6 +117,10 @@ const Track = ({ trackId }) => {
             <p>{track.album.release_date}</p>
           </div>
         </div>
+      </div>
+
+      <div className="container mt-5 text-center w-50 ratio pt-5">
+          <p><HeartFill color="pink" size={50} /> : <span>{likes.length}</span>     <StarFill color="gold" size={50} /> : <span>{averageRating.toFixed(1)}</span></p>  
       </div>
 
       <div className="container mt-5">
