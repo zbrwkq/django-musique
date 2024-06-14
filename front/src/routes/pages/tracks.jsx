@@ -85,17 +85,13 @@ const Tracks = () => {
 
   const indexOfLastTrack = currentPage * tracksPerPage;
   const indexOfFirstTrack = indexOfLastTrack - tracksPerPage;
-  const currentTracks = filteredTracks.slice(
-    indexOfFirstTrack,
-    indexOfLastTrack
-  );
+  const currentTracks = filteredTracks.slice(indexOfFirstTrack, indexOfLastTrack);
 
-  const paginate = (pageNumber) => {
-    if (
-      pageNumber >= 1 &&
-      pageNumber <= Math.ceil(filteredTracks.length / tracksPerPage)
-    ) {
-      setCurrentPage(pageNumber);
+  const paginate = (direction) => {
+    if (direction === "next" && currentPage < Math.ceil(filteredTracks.length / tracksPerPage)) {
+      setCurrentPage(currentPage + 1);
+    } else if (direction === "prev" && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
   };
 
@@ -124,13 +120,10 @@ const Tracks = () => {
           </tr>
         </thead>
         <tbody>
-          {tracks.map((track) => (
+          {currentTracks.map((track) => (
             <tr key={track.spotify_id}>
               <td>
-                {" "}
-                <NavLink to={`/track/${track.spotify_id}`}>
-                  {track.name}
-                </NavLink>
+                <NavLink to={`/track/${track.spotify_id}`}>{track.name}</NavLink>
               </td>
               <td>
                 {auth.token && (
@@ -151,24 +144,16 @@ const Tracks = () => {
       <nav>
         <ul className="pagination">
           <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-            <button
-              onClick={() => paginate(currentPage - 1)}
-              className="page-link"
-            >
+            <button onClick={() => paginate("prev")} className="page-link">
               Précédent
             </button>
           </li>
           <li
             className={`page-item ${
-              currentPage === Math.ceil(filteredTracks.length / tracksPerPage)
-                ? "disabled"
-                : ""
+              currentPage === Math.ceil(filteredTracks.length / tracksPerPage) ? "disabled" : ""
             }`}
           >
-            <button
-              onClick={() => paginate(currentPage + 1)}
-              className="page-link"
-            >
+            <button onClick={() => paginate("next")} className="page-link">
               Suivant
             </button>
           </li>
