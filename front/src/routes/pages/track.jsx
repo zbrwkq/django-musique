@@ -91,7 +91,7 @@ const Track = ({ trackId }) => {
             {track.artists.map((artist, index) => (
               <NavLink to={`/artist/${artist.id}`} key={artist.id}>
                 {artist.name}
-                {index < track.artists.length - 1 ? "," : ""}
+                {index < track.artists.length - 1 ? ", " : ""}
               </NavLink>
             ))}
           </h3>
@@ -120,16 +120,14 @@ const Track = ({ trackId }) => {
           <div className="col-md-3 album-details mt-5">
             <h2>Release Date :</h2>
             <p>{track.album.release_date}</p>
-          </div>
-          {track.preview_url && (
-            <div className="col-md-3 album-details mt-5">
-              <h2>Preview :</h2>
+            <h2>Preview :</h2>
+            {track.preview_url && (
               <audio controls>
                 <source src={track.preview_url} type="audio/mpeg" />
                 Votre navigateur ne supporte pas l'élément audio.
               </audio>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 

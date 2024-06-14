@@ -93,7 +93,7 @@ const Album = () => {
             {album.artists.map((artist, index) => (
               <NavLink to={`/artist/${artist.id}`} key={artist.id}>
                 {artist.name}
-                {index < album.artists.length - 1 ? "," : ""}
+                {index < album.artists.length - 1 ? ", " : ""}
               </NavLink>
             ))}
           </h3>

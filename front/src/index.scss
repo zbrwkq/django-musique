@@ -1,9 +1,6 @@
 @import "~bootstrap/scss/bootstrap";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 
-$spotify-black: #141719;
-$spotify-green: #1db954;
-
 a {
   text-decoration: none;
   color: black;
@@ -15,7 +12,7 @@ a {
 #preview-page .background {
   height: 100%;
   width: 100%;
-  background: linear-gradient(to bottom, $success, $spotify-black, $dark);
+  background: linear-gradient(to bottom, $success, #141719, $dark);
   color: "#ffffff";
   font-weight: bold;
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -41,7 +38,7 @@ a {
 }
 
 #album-page .input-inverse {
-  background-color: $spotify-black;
+  background-color: $dark;
   color: #ffffff;
   border: 1px solid #ffffff;
 }
@@ -51,7 +48,7 @@ a {
 }
 
 #preview-page .input-inverse {
-  background-color: $spotify-black;
+  background-color: $dark;
   color: #ffffff;
   border: 1px solid #ffffff;
 }
