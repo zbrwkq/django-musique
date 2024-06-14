@@ -8,6 +8,10 @@ from .serializers import LikesSerializer
 from .models import Likes
 import logging
 
+from albums.views import get_album_by_id_spotify
+from artists.views import get_artist_by_id_spotify
+from tracks.views import get_track_by_id_spotify
+
 # Create your views here.
 
 
@@ -28,7 +32,7 @@ def get_likes(request):
 
 
 @api_view(['GET'])
-def get_likes_by_track(request, id_track):
+def get_likes_by_track(request, id):
     """
     get:
     Retourne la liste des likes pour une piste spécifique.
@@ -40,15 +44,20 @@ def get_likes_by_track(request, id_track):
     - 200 OK: Retourne une liste des likes pour la piste.
     - 404 Not Found: Si aucun like n'est trouvé pour cette piste.
     """
-    likes = get_list_or_404(Likes, id_track=id_track)
+    try:
+        id = int(id)
+    except ValueError:
+        id = get_track_by_id_spotify(id).get('id')  
+    
+    likes = get_list_or_404(Likes, id_track=id)
 
     serializer = LikesSerializer(likes, many=True)
 
-    return Response({"Likes" : serializer.data})
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
-def get_likes_by_artist(request, id_artist):
+def get_likes_by_artist(request, id):
     """
     get:
     Retourne la liste des likes pour un artiste spécifique.
@@ -60,15 +69,21 @@ def get_likes_by_artist(request, id_artist):
     - 200 OK: Retourne une liste des likes pour l'artiste.
     - 404 Not Found: Si aucun like n'est trouvé pour cet artiste.
     """
-    likes = get_list_or_404(Likes, id_artist=id_artist)
+
+    try:
+        id = int(id)
+    except ValueError:
+        id = get_artist_by_id_spotify(id).get('id')
+
+    likes = get_list_or_404(Likes, id_artist=id)
 
     serializer = LikesSerializer(likes, many=True)
 
-    return Response({"Likes" : serializer.data})
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
-def get_likes_by_album(request, id_album):
+def get_likes_by_album(request, id):
     """
     get:
     Retourne la liste des likes pour un album spécifique.
@@ -80,11 +95,17 @@ def get_likes_by_album(request, id_album):
     - 200 OK: Retourne une liste des likes pour l'album.
     - 404 Not Found: Si aucun like n'est trouvé pour cet album.
     """
-    likes = get_list_or_404(Likes, id_album=id_album)
+
+    try:
+        id = int(id)
+    except ValueError:
+        id = get_album_by_id_spotify(id).get('id')
+
+    likes = get_list_or_404(Likes, id_album=id)
 
     serializer = LikesSerializer(likes, many=True)
 
-    return Response({"Likes" : serializer.data})
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
