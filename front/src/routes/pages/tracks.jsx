@@ -12,7 +12,6 @@ const Tracks = () => {
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [likes, setLikes] = useState({});
   const [likedTracks, setLikedTracks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,7 +54,9 @@ const Tracks = () => {
     }
   }, [auth.token]);
 
-  const handleLike = async (trackId) => {
+  const handleLike = async (trackId, event) => {
+    event.preventDefault();
+    event.stopPropagation();
     try {
       const response = await axios.post(
         `http://127.0.0.1:8000/likes/like_track/${trackId}/`,
@@ -65,9 +66,11 @@ const Tracks = () => {
         }
       );
       if (response.data.message === "Like ajouté") {
-        setLikes([...likedTracks, trackId]);
+        setLikedTracks((prevLikedTracks) => [...prevLikedTracks, trackId]);
       } else {
-        setLikes(likedTracks.filter((id) => id !== trackId));
+        setLikedTracks((prevLikedTracks) =>
+          prevLikedTracks.filter((id) => id !== trackId)
+        );
       }
     } catch (err) {
       console.error(err.message);
@@ -129,7 +132,7 @@ const Tracks = () => {
                 {auth.token && (
                   <FontAwesomeIcon
                     icon={faHeart}
-                    onClick={() => handleLike(track.id)}
+                    onClick={(e) => handleLike(track.id, e)}
                     style={{
                       color: likedTracks.includes(track.id) ? "red" : "grey",
                       cursor: "pointer",
