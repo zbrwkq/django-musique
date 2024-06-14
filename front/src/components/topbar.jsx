@@ -16,6 +16,7 @@ const Topbar = () => {
   if (isAuthenticated) {
     authButtons = (
       <>
+        <Nav.Link href="/profil">Profil</Nav.Link>
         <Nav.Link onClick={() => auth.logOut()} href="/login">
           Se déconnecter
         </Nav.Link>
@@ -38,7 +39,6 @@ const Topbar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="/profil">Profil</Nav.Link>
             <Nav.Link href="/albums">Albums</Nav.Link>
             <Nav.Link href="/artists">Artistes</Nav.Link>
             <Nav.Link href="/tracks">Titres</Nav.Link>
