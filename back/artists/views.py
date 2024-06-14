@@ -92,8 +92,37 @@ def get_artist_by_id(request, id):
     return Response({"Artist" : serializer.data})
 
 def get_artist_by_id_spotify(id):
-    artist = get_object_or_404(Artists, spotify_id=id)
+    artist = Artists.objects.filter(id_artist=id).first()
+
+    print(id)
+
+    if not artist :
+
+        access_token = get_token()
+        artist_url = f'https://api.spotify.com/v1/artists/{str(id)}'
+        headers = {
+            'Authorization': f'Bearer {access_token}'
+        }
+
+        response = requests.get(artist_url, headers=headers)
+
+        artist_data = response.json()
+        
+        artist = Artists(
+            id=int(get_last_id())+1,
+            spotify_id=id,
+            name=artist_data.get('name', None),
+            photo_url=artist_data.get('images', [])[0].get('url', None),
+        )
+
+        artist.save()
 
     serializer = ArtistsSerializer(artist, many=False)
 
     return serializer.data
+
+
+def get_last_id():
+    artists = Artists.objects.all()
+    last_artist = artists.order_by('-id').first()
+    return last_artist.id
