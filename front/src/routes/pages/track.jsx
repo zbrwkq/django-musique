@@ -116,11 +116,20 @@ const Track = ({ trackId }) => {
             <h2>Release Date :</h2>
             <p>{track.album.release_date}</p>
           </div>
+            {track.preview_url && (
+              <div className="col-md-3 album-details mt-5">
+                  <h2>Preview :</h2>
+                  <audio controls>
+                    <source src={track.preview_url} type="audio/mpeg" />
+                    Votre navigateur ne supporte pas l'élément audio.
+                  </audio>
+              </div>
+            )}
         </div>
       </div>
 
       <div className="container mt-5 text-center w-50 ratio pt-5">
-          <p><HeartFill color="pink" size={50} /> : <span>{likes.length}</span>     <StarFill color="gold" size={50} /> : <span>{averageRating.toFixed(1)}</span></p>  
+          <p><HeartFill color="pink" size={50} /> : <span>{likes ? likes.length : 0}</span>     <StarFill color="gold" size={50} /> : <span>{averageRating ? averageRating.toFixed(1) : 0}</span></p>  
       </div>
 
       <div className="container mt-5">

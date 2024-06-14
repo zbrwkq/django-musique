@@ -112,6 +112,7 @@ def get_comments_by_album(request, id):
     - 200 OK: Retourne une liste des commentaires pour l'album.
     - 404 Not Found: Si aucun commentaire n'est trouvé pour cet album.
     """
+    print(id)
     try:
         id = int(id)
     except ValueError:
