@@ -89,7 +89,7 @@ const Album = () => {
       <div className="album-container container text-white mt-5">
         <div className="text-center">
           <h1>{album.name}</h1>
-          <h3>
+          <h3 className="text-muted">
             {album.artists.map((artist, index) => (
               <NavLink to={`/artist/${artist.id}`} key={artist.id}>
                 {artist.name}
@@ -109,6 +109,12 @@ const Album = () => {
                 height={500}
               />
             )}
+
+            <p className="lead m-3">
+              <HeartFill color="pink" /> :{" "}
+              <span>{likes ? likes.length : 0}</span> <StarFill color="gold" />{" "}
+              : <span>{averageRating ? averageRating.toFixed(1) : 0}</span>
+            </p>
           </div>
           <div className="col-md-3 album-details mt-5">
             <h2>Tracks :</h2>
@@ -133,15 +139,6 @@ const Album = () => {
             <p>{album.label}</p>
           </div>
         </div>
-      </div>
-
-      <div className="container mt-5 text-center w-50 ratio pt-5">
-        <p>
-          <HeartFill color="pink" size={50} /> :{" "}
-          <span>{likes ? likes.length : 0}</span>{" "}
-          <StarFill color="gold" size={50} /> :{" "}
-          <span>{averageRating ? averageRating.toFixed(1) : 0}</span>
-        </p>
       </div>
 
       <div className="container mt-5">

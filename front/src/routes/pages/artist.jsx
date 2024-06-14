@@ -104,6 +104,12 @@ const Artist = ({ artistId }) => {
                 height={500}
               />
             )}
+
+            <p className="lead m-3">
+              <HeartFill color="pink" /> :{" "}
+              <span>{likes ? likes.length : 0}</span> <StarFill color="gold" />{" "}
+              : <span>{averageRating ? averageRating.toFixed(1) : 0}</span>
+            </p>
           </div>
           <div className="col-md-3 artist-details mt-5">
             <h2>Top Tracks:</h2>
@@ -120,15 +126,6 @@ const Artist = ({ artistId }) => {
             <p>{artist.genres.join(", ")}</p>
           </div>
         </div>
-      </div>
-
-      <div className="container mt-5 text-center w-50 ratio pt-5">
-        <p>
-          <HeartFill color="pink" size={50} /> :{" "}
-          <span>{likes ? likes.length : 0}</span>{" "}
-          <StarFill color="gold" size={50} /> :{" "}
-          <span>{averageRating ? averageRating.toFixed(1) : 0}</span>
-        </p>
       </div>
 
       <div className="container mt-5">

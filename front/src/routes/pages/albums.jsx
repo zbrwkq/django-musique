@@ -130,9 +130,11 @@ const Albums = () => {
                 )}
               </p>
             </NavLink>
-            <NavLink to={`/artist/${album.id_artist}`} id="album_artist">
-              <p className="m-0">{album.artist}</p>
-            </NavLink>
+            <p className="m-0 text-muted">
+              <NavLink to={`/artist/${album.id_artist}`} id="album_artist">
+                {album.artist}
+              </NavLink>
+            </p>
           </li>
         ))}
       </ul>

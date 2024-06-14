@@ -38,12 +38,12 @@ const Topbar = () => {
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
+          <Nav>
             <Nav.Link href="/albums">Albums</Nav.Link>
             <Nav.Link href="/artists">Artistes</Nav.Link>
             <Nav.Link href="/tracks">Titres</Nav.Link>
-            {authButtons}
           </Nav>
+          <Nav className="ms-auto">{authButtons}</Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
