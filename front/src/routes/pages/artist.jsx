@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import CommentForm from '../../components/CommentForm';
-import Comment from '../../components/Comment';
+import CommentForm from "../../components/CommentForm";
+import Comment from "../../components/Comment";
 import { StarFill, HeartFill } from "react-bootstrap-icons";
 
 const Artist = ({ artistId }) => {
@@ -24,18 +24,21 @@ const Artist = ({ artistId }) => {
           `http://127.0.0.1:8000/artists/${id}/`
         );
         setArtist(response.data);
+        console.log(response.data);
       } catch (err) {
         setError("Failed to fetch artist details");
       }
     };
-    
+
     const fetchLikes = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/likes/artist/${id}/`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/likes/artist/${id}/`
+        );
         setLikes(response.data);
         console.log(response.data);
       } catch (error) {
-        console.error('Error fetching likes:', error);
+        console.error("Error fetching likes:", error);
       }
     };
 
@@ -52,11 +55,14 @@ const Artist = ({ artistId }) => {
         const fetchedComments = response.data.reverse();
         setComments(fetchedComments);
 
-        const totalRating = fetchedComments.reduce((sum, comment) => sum + comment.rating, 0);
-        const averageRating = fetchedComments.length > 0 ? totalRating / fetchedComments.length : 0;
+        const totalRating = fetchedComments.reduce(
+          (sum, comment) => sum + comment.rating,
+          0
+        );
+        const averageRating =
+          fetchedComments.length > 0 ? totalRating / fetchedComments.length : 0;
         setAverageRating(averageRating);
         setAddComments(false);
-
       } catch (error) {
         setError(error);
       }
@@ -70,22 +76,19 @@ const Artist = ({ artistId }) => {
   };
 
   const handleDeleteComment = (deletedCommentId) => {
-    setComments(comments.filter(comment => comment.id !== deletedCommentId));
+    setComments(comments.filter((comment) => comment.id !== deletedCommentId));
   };
 
   if (error) {
-    return <div>{error}</div>;
+    console.log(error);
   }
 
   if (!artist) {
     return <div>Loading...</div>;
   }
   return (
-    <div
-      id="preview-page"
-      className="w-100 pt-5"
-    >
-      <div className='background'></div>
+    <div id="preview-page" className="w-100 pt-5">
+      <div className="background"></div>
       <div className="artist-container container text-white mt-5">
         <div className="text-center">
           <h1>{artist.name}</h1>
@@ -118,12 +121,17 @@ const Artist = ({ artistId }) => {
           </div>
         </div>
       </div>
-      
+
       <div className="container mt-5 text-center w-50 ratio pt-5">
-          <p><HeartFill color="pink" size={50} /> : <span>{likes ? likes.length : 0}</span>     <StarFill color="gold" size={50} /> : <span>{averageRating ? averageRating.toFixed(1) : 0}</span></p>  
+        <p>
+          <HeartFill color="pink" size={50} /> :{" "}
+          <span>{likes ? likes.length : 0}</span>{" "}
+          <StarFill color="gold" size={50} /> :{" "}
+          <span>{averageRating ? averageRating.toFixed(1) : 0}</span>
+        </p>
       </div>
 
-      <div className='container mt-5'>
+      <div className="container mt-5">
         <CommentForm artistId={id} onAdd={handleAddComment} />
       </div>
 
@@ -131,7 +139,11 @@ const Artist = ({ artistId }) => {
         <h2>Commentaires</h2>
         {comments.length > 0 ? (
           comments.map((comment) => (
-            <Comment key={comment.id} comment={comment} onDelete={handleDeleteComment} />
+            <Comment
+              key={comment.id}
+              comment={comment}
+              onDelete={handleDeleteComment}
+            />
           ))
         ) : (
           <p>Pas de commentaire, soyez le premier à noter cet album !</p>
