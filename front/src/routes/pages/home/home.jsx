@@ -7,10 +7,9 @@ const Home = () => {
     <>
       <section
         id="preview-page"
-        className="p-5 mb-3 d-flex flex-column justify-content-end"
-        style={{ height: "90vh" }}
+        className="p-5 mb-3 d-flex flex-column mt-5"
       >
-        <h1 className="mb-5 d-flex align-items-center flex-column lh-lg">
+        <h1 className="mb-5 d-flex align-items-center flex-column lh-lg mt-5">
           Suivez les musiques que vous avez écouté.
           <br />
           Lisez des avis sur vos musiques préférées.
