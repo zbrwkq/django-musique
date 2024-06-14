@@ -50,10 +50,7 @@ def get_album(request, id):
 def get_album_by_id_spotify(id):
     album = Albums.objects.filter(id_album=id).first()
 
-    print(id)
-
     if not album :
-
         access_token = get_token()
         album_url = f'https://api.spotify.com/v1/albums/{str(id)}'
         headers = {

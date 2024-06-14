@@ -92,7 +92,7 @@ def get_artist_by_id(request, id):
     return Response({"Artist" : serializer.data})
 
 def get_artist_by_id_spotify(id):
-    artist = Artists.objects.filter(id_artist=id).first()
+    artist = Artists.objects.filter(spotify_id=id).first()
 
     print(id)
 

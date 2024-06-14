@@ -49,7 +49,7 @@ def get_likes_by_track(request, id):
     except ValueError:
         id = get_track_by_id_spotify(id).get('id')  
     
-    likes = Likes.objects.filter(Likes, id_track=id)
+    likes = Likes.objects.filter(id_track=id)
 
     serializer = LikesSerializer(likes, many=True)
 
@@ -75,7 +75,7 @@ def get_likes_by_artist(request, id):
     except ValueError:
         id = get_artist_by_id_spotify(id).get('id')
 
-    likes = Likes.objects.filter(Likes, id_artist=id)
+    likes = Likes.objects.filter(id_artist=id)
 
     serializer = LikesSerializer(likes, many=True)
 
@@ -101,7 +101,7 @@ def get_likes_by_album(request, id):
     except ValueError:
         id = get_album_by_id_spotify(id).get('id')
 
-    likes = Likes.objects.filter(Likes, id_album=id)
+    likes = Likes.objects.filter(id_album=id)
 
     serializer = LikesSerializer(likes, many=True)
 
