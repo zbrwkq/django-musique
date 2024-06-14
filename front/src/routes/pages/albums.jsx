@@ -10,6 +10,9 @@ const Albums = () => {
   const [albums, setAlbums] = useState([]);
   const [likedAlbums, setLikedAlbums] = useState([]);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [albumsPerPage] = useState(12);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const auth = useAuth();
 
@@ -19,7 +22,7 @@ const Albums = () => {
         const response = await axios.get("http://127.0.0.1:8000/albums/");
         setAlbums(response.data.Albums);
       } catch (err) {
-        setError(err.message);
+        setError("Failed to fetch albums");
       }
     };
 
@@ -38,7 +41,7 @@ const Albums = () => {
           );
           setLikedAlbums(response.data.liked_albums);
         } catch (err) {
-          setError(err.message);
+          setError("Failed to fetch liked albums");
         }
       };
 
@@ -63,14 +66,45 @@ const Albums = () => {
         setLikedAlbums(likedAlbums.filter((id) => id !== albumId));
       }
     } catch (err) {
-      console.error(err.message);
+      console.error("Error liking album:", err.message);
+    }
+  };
+
+  // Pagination logic
+  const indexOfLastAlbum = currentPage * albumsPerPage;
+  const indexOfFirstAlbum = indexOfLastAlbum - albumsPerPage;
+  const currentAlbums = albums
+    .filter(album => 
+      album.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      album.artist.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .slice(indexOfFirstAlbum, indexOfLastAlbum);
+
+  const nextPage = () => {
+    if (currentPage < Math.ceil(albums.length / albumsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
   };
 
   return (
     <div className="w-100 container">
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Rechercher un album ou un artiste..."
+          onChange={(e) => setSearchTerm(e.target.value)}
+          value={searchTerm}
+          className="form-control"
+        />
+      </div>
       <ul className="w-100 d-flex flex-wrap justify-content-between">
-        {albums.map((album) => (
+        {currentAlbums.map((album) => (
           <li
             key={album.id}
             className="mb-3"
@@ -104,6 +138,22 @@ const Albums = () => {
           </li>
         ))}
       </ul>
+      <div className="pagination-buttons d-flex justify-content-between mt-4">
+        <button
+          onClick={prevPage}
+          disabled={currentPage === 1}
+          className="btn btn-primary"
+        >
+          Précédent
+        </button>
+        <button
+          onClick={nextPage}
+          disabled={currentPage === Math.ceil(albums.length / albumsPerPage)}
+          className="btn btn-primary"
+        >
+          Suivant
+        </button>
+      </div>
     </div>
   );
 };
