@@ -13,7 +13,7 @@ const Album = () => {
   const [likes, setLikes] = useState(0);
   const [averageRating, setAverageRating] = useState(null);
 
-  console.log(album)
+  console.log(album);
 
   const { id } = useParams();
 
@@ -29,11 +29,13 @@ const Album = () => {
 
     const fetchLikes = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/likes/album/${id}/`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/likes/album/${id}/`
+        );
         setLikes(response.data);
         console.log(response.data);
       } catch (error) {
-        console.error('Error fetching likes:', error);
+        console.error("Error fetching likes:", error);
       }
     };
 
@@ -50,11 +52,14 @@ const Album = () => {
         const fetchedComments = response.data.reverse();
         setComments(fetchedComments);
 
-        const totalRating = fetchedComments.reduce((sum, comment) => sum + comment.rating, 0);
-        const averageRating = fetchedComments.length > 0 ? totalRating / fetchedComments.length : 0;
+        const totalRating = fetchedComments.reduce(
+          (sum, comment) => sum + comment.rating,
+          0
+        );
+        const averageRating =
+          fetchedComments.length > 0 ? totalRating / fetchedComments.length : 0;
         setAverageRating(averageRating);
         setAddComments(false);
-
       } catch (error) {
         setError(error);
       }
@@ -76,7 +81,7 @@ const Album = () => {
   }
 
   if (error) {
-     console.log(error)
+    console.log(error);
   }
   return (
     <div id="album-page" className="w-100 pt-5">
@@ -115,11 +120,28 @@ const Album = () => {
               ))}
             </ul>
           </div>
+          <div className="col-md-3 album-details mt-5">
+            <h2>Date de sortie :</h2>
+            <p>{album.release_date}</p>
+            {album.genres.length > 0 && (
+              <>
+                <h2>Genres :</h2>
+                <p>{album.genres.join(", ")}</p>
+              </>
+            )}
+            <h2>Label :</h2>
+            <p>{album.label}</p>
+          </div>
         </div>
       </div>
 
       <div className="container mt-5 text-center w-50 ratio pt-5">
-          <p><HeartFill color="pink" size={50} /> : <span>{likes ? likes.length : 0}</span>     <StarFill color="gold" size={50} /> : <span>{averageRating ? averageRating.toFixed(1) : 0}</span></p>  
+        <p>
+          <HeartFill color="pink" size={50} /> :{" "}
+          <span>{likes ? likes.length : 0}</span>{" "}
+          <StarFill color="gold" size={50} /> :{" "}
+          <span>{averageRating ? averageRating.toFixed(1) : 0}</span>
+        </p>
       </div>
 
       <div className="container mt-5">
