@@ -115,7 +115,7 @@ const Profil = () => {
                                     onClick={() => toggleFriend(user.id)}>
                                     Ajouter en ami
                                 </button>
-                                <a href={`/friend/${user.id}`}>Voir le profil</a>
+                                <a className="btn btn-primary ms-3" href={`/friend/${user.id}`}>Voir le profil</a>
                             </td>
                         </tr>
                     ))}
