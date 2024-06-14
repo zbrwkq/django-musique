@@ -4,9 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../hooks/AuthProvider";
 import { jwtDecode } from "jwt-decode";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import { NavLink } from "react-router-dom";
+import SearchBar from "../../components/searchBar";
 
 const Tracks = () => {
   const [tracks, setTracks] = useState([]);
@@ -88,10 +87,16 @@ const Tracks = () => {
 
   const indexOfLastTrack = currentPage * tracksPerPage;
   const indexOfFirstTrack = indexOfLastTrack - tracksPerPage;
-  const currentTracks = filteredTracks.slice(indexOfFirstTrack, indexOfLastTrack);
+  const currentTracks = filteredTracks.slice(
+    indexOfFirstTrack,
+    indexOfLastTrack
+  );
 
   const paginate = (direction) => {
-    if (direction === "next" && currentPage < Math.ceil(filteredTracks.length / tracksPerPage)) {
+    if (
+      direction === "next" &&
+      currentPage < Math.ceil(filteredTracks.length / tracksPerPage)
+    ) {
       setCurrentPage(currentPage + 1);
     } else if (direction === "prev" && currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -103,18 +108,7 @@ const Tracks = () => {
 
   return (
     <div className="w-100 container">
-      <InputGroup className="my-3">
-        <Form.Control
-          type="text"
-          placeholder="Rechercher..."
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-        <InputGroup.Text>
-          <FontAwesomeIcon icon={faSearch} />
-        </InputGroup.Text>
-      </InputGroup>
-
+      <SearchBar searchTerm={searchTerm} handleSearch={handleSearch} />
       <table className="table">
         <thead>
           <tr>
@@ -126,7 +120,9 @@ const Tracks = () => {
           {currentTracks.map((track) => (
             <tr key={track.spotify_id}>
               <td>
-                <NavLink to={`/track/${track.spotify_id}`}>{track.name}</NavLink>
+                <NavLink to={`/track/${track.spotify_id}`}>
+                  {track.name}
+                </NavLink>
               </td>
               <td>
                 {auth.token && (
@@ -153,7 +149,9 @@ const Tracks = () => {
           </li>
           <li
             className={`page-item ${
-              currentPage === Math.ceil(filteredTracks.length / tracksPerPage) ? "disabled" : ""
+              currentPage === Math.ceil(filteredTracks.length / tracksPerPage)
+                ? "disabled"
+                : ""
             }`}
           >
             <button onClick={() => paginate("next")} className="page-link">
