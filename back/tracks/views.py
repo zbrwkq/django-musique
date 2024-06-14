@@ -48,7 +48,7 @@ def get_track(request, id):
 
     response = requests.get(track_url, headers=headers)
     if response.status_code != 200:
-        return render(request, 'error.html', {'message': 'Failed to fetch track details'})
+        return render(request, 'error.html', {'message': 'Failed to fetch track'})
 
     track_data = response.json()
 

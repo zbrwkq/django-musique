@@ -82,7 +82,7 @@ const Profil = () => {
                     {friendsList.map(user => (
                         <tr key={user.id}>
                             <td>
-                                <a href={`/details/${user.id}`}>
+                                <a href={`/friend/${user.id}`}>
                                     {user.username}
                                 </a>
                             </td>
@@ -92,6 +92,7 @@ const Profil = () => {
                                     onClick={() => toggleFriend(user.id)}>
                                     Supprimer des amis
                                 </button>
+                                <a className="btn btn-primary ms-3" href={`/friend/${user.id}`}>Voir le profil</a>
                             </td>
                         </tr>
                     ))}
